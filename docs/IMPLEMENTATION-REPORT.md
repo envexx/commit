@@ -33,7 +33,7 @@ rules release / refund** — is implemented end-to-end at the code level:
 | 2 — Contract implementation | Full state machine + unit/security/invariant tests | Done (74/74 pass) |
 | 3 — Web MVP | Wallet, create/fund, detail page, submit, approve, timeline, explorer links | Done |
 | 4 — UX hardening | Wrong-network banner, tx states, FUNDED/UNFUNDED distinction, countdowns, empty/error/loading states | Done |
-| 5 — Mainnet deployment | Verified deploy + addresses + smoke test | **Not started** (no `deployments/5042.json`, no tx evidence) |
+| 5 — Mainnet deployment | Verified deploy + addresses + smoke test | **Testnet rehearsal done** (factory + funded milestone on 5042002; `DEMO_EVIDENCE.md` §2, `deployments/5042002.json`); mainnet deploy pending deployer funding |
 | 6 — Failure-path mainnet validation | Timeout/refund on mainnet + evidence log | **Not started** |
 | 7 — Submission packaging | README, demo video, `DEMO_EVIDENCE.md` | Mostly done (`README.md`, `DEMO_EVIDENCE.md`, `LICENSE`, `.gitignore` added 2026-09-17; demo video optional) |
 
@@ -80,8 +80,10 @@ emits `MilestoneCreated` (the UI parses this event to learn the vault address).
   `deployments/31337.json`:
   factory `0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9`,
   USDC `0x5FbDB2315678afecb367f032d93F642f64180aa3`.
-- `script/Deploy.s.sol` — mainnet/testnet deployment script (ready, not yet
-  executed against a live chain in this repo).
+- `script/Deploy.s.sol` — mainnet/testnet deployment script, executed against
+  Arc testnet on 2026-09-18 (ED-15):
+  factory `0x69083F1e10D95a2bE29e2D9Ef76d3C0CaDDb360D`, recorded in
+  `deployments/5042002.json`. Mainnet not yet executed.
 - `test/mocks/MockUSDC.sol` — 6-decimal mock matching Arc USDC semantics.
 
 ### 3.4 Test verification (re-run 2026-09-17)
@@ -166,11 +168,13 @@ Chains configured: Arc Mainnet (5042), Arc Testnet (5042002), local anvil
 
 ## 6. Open gaps (honest list)
 
-1. **No mainnet deployment evidence** — Phase 5/6 deliverables (verified
-   deploy, addresses, smoke-test tx hashes) are missing; only the local anvil
-   record exists.
-2. **No git history** — the repository has zero commits on `master`; the
-   roadmap's "commit small, reviewable changes" contract is not yet satisfied.
+1. **No mainnet deployment evidence** — Phase 5/6 mainnet deliverables
+   (verified deploy, addresses, smoke-test tx hashes) are still missing; the
+   testnet rehearsal (`DEMO_EVIDENCE.md` §2) and the local anvil record are
+   the only deployment evidence so far. Mainnet is blocked on deployer funding.
+2. **Git history started late** — the first commits landed 2026-09-18
+   (`3ea5937` initial import, then Phase 4/5 work); earlier phases were built
+   without incremental commits.
 3. **Missing env wiring for a working demo** — `NEXT_PUBLIC_FACTORY_ADDRESS`
    / `NEXT_PUBLIC_USDC_ADDRESS` unset at build time, so `/create` shows the
    "not configured" guard and the full happy path cannot be exercised through

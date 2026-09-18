@@ -33,7 +33,37 @@
 | Deadline refund | _TBD_ | `refundExpired` |
 | Mutual cancel | _TBD_ | both signatures |
 
-## 2. Local rehearsal (anvil, chain 31337) — reproducible
+## 2. Arc testnet rehearsal (chain 5042002) — 18 September 2026
+
+Phase 5 rehearsal before mainnet (ED-15). Commit `6835a51`, solc 0.8.28
+(optimizer 200 runs).
+
+| Item | Value |
+| --- | --- |
+| Deployer | `0x5bF729412bB61f8cF92f927665397aB7eFbF7802` |
+| MilestoneVaultFactory | `0x69083F1e10D95a2bE29e2D9Ef76d3C0CaDDb360D` |
+| Deploy tx | `0x4412b053e92bd07032eeb3f9044729b4b43bcddeaa48aae34fbf99570f4641a0` |
+| Deployment record | `packages/contracts/deployments/5042002.json` |
+| USDC (ERC-20 interface) | `0x3600000000000000000000000000000000000000` (6 decimals) |
+| Explorer | https://explorer.testnet.arc.io/address/0x69083F1e10D95a2bE29e2D9Ef76d3C0CaDDb360D |
+
+### Funded milestone (testnet smoke test)
+
+Client `0x5bF7…7802` (deployer), contractor `0x7099…79C8`, amount 0.01 USDC,
+submission period 7 days, review period 3 days, scopeHash
+`0x45ac8b7363d2d2f2a1da06ee5b72edf79bb69dd19aa060871f371be0a1717c5e`.
+
+| Step | Tx hash | Result |
+| --- | --- | --- |
+| Create milestone (deploy vault) | `0x3ef604373c499b3b37b2cee8f8387c6d22d681c6fd6920cb7e88796f5541965a` | vault `0x40cEF618633e9517AB40548661EcAE4944dBE071` |
+| Approve USDC | `0xb8bdfc8e29a883a2eb519b93b974aeadb6cf55df665dbfe0c328d15e7b582de7` | allowance = 10000 (0.01 USDC) |
+| Fund milestone | `0xea23d300dfb10e481e1b8de7efdff06e6e3b89db540cca04c5c0967d43939596` | vault balance = 0.01 USDC |
+
+Post-conditions read onchain: `vaultCount() = 1`, vault `getStatus().state = 1`
+(`Funded`), `submitDeadline = fundedAt + 604800` (7 days), USDC
+`balanceOf(vault) = 10000`. Remaining testnet balance after the run: ~19.88 USDC.
+
+## 3. Local rehearsal (anvil, chain 31337) — reproducible
 
 Recorded by `script/DeployLocal.s.sol`, file `packages/contracts/deployments/31337.json`:
 
@@ -63,7 +93,7 @@ Script (also in `apps/web/README.md`):
 4. Repeat with `claimAfterReview` (time-warped), `refundExpired`, and mutual
    cancel to cover the failure paths.
 
-## 3. Test evidence
+## 4. Test evidence
 
 ```
 forge test → Ran 15 test suites: 74 tests passed, 0 failed, 0 skipped

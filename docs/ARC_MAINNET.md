@@ -75,3 +75,25 @@ Filled in after Phase 5 (see DEPLOYMENT.md):
 | Commit hash       | TBD   |
 | Compiler          | solc 0.8.28 via Foundry |
 | Verification      | TBD   |
+
+Mainnet deployment is blocked until the deployer address
+(`0x5bF729412bB61f8cF92f927665397aB7eFbF7802`) holds mainnet USDC for gas
+(~0.15 USDC). Rehearsed first on testnet (below).
+
+## Testnet rehearsal record (chain 5042002)
+
+Recorded 18 September 2026, commit `6835a51`. This is the Phase 5 rehearsal
+(ED-15), not the mainnet deployment.
+
+| Field              | Value |
+| :---------------- | :---- |
+| Factory address   | `0x69083F1e10D95a2bE29e2D9Ef76d3C0CaDDb360D` |
+| Deploy tx         | `0x4412b053e92bd07032eeb3f9044729b4b43bcddeaa48aae34fbf99570f4641a0` |
+| Deployer          | `0x5bF729412bB61f8C92f927665397aB7eFbF7802` |
+| USDC              | `0x3600000000000000000000000000000000000000` (6 decimals, same as mainnet) |
+| Commit hash       | `6835a51` |
+| Compiler          | solc 0.8.28 via Foundry (optimizer 200 runs) |
+| Record file       | `packages/contracts/deployments/5042002.json` |
+| Smoke test        | funded 0.01 USDC milestone, vault `0x40cEF618633e9517AB40548661EcAE4944dBE071` |
+
+Full transaction list in `DEMO_EVIDENCE.md` §2.

@@ -215,3 +215,19 @@ so `useVault` now normalizes through `parseVaultConfig`/`parseVaultStatus`
 instead of casting the raw array to the object types (previously
 `status.state` was `undefined` at runtime on any live read). Design language:
 `docs/UI-V2-WORKFLOW.md`.
+
+## Phase 5: Testnet rehearsal (18 September 2026)
+
+### ED-15: Rehearse on Arc testnet before mainnet
+Phase 5 was rehearsed end-to-end on **Arc testnet (chain 5042002)** on a
+throwaway-funded deployer before touching mainnet. `Deploy.s.sol` was executed
+with `--broadcast`; the factory deployed at
+`0x69083F1e10D95a2bE29e2D9Ef76d3C0CaDDb360D` (tx
+`0x4412b053…4641a0`, commit `6835a51`), then a 0.01 USDC milestone was created,
+approved, and funded through the live factory, reaching `Funded` state with the
+vault holding exactly the committed amount. Full tx list:
+`DEMO_EVIDENCE.md` §2. The rehearsal confirmed the deployment script, the
+USDC ERC-20 interface at `0x3600…0000` (6 decimals, same on both networks), and
+the create→approve→fund path against real network conditions. Mainnet
+deployment is deferred until the deployer address holds mainnet USDC for gas
+(~0.15 USDC); no code or rule changes resulted from the rehearsal.
