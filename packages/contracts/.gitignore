@@ -1,0 +1,14 @@
+# Compiler files
+cache/
+out/
+
+# Dotenv
+.env
+.env.*
+
+# Deployment broadcast noise
+broadcast/**/dry-run/
+broadcast/*/31337/
+
+# Local rehearsal deployment record (mainnet/testnet records are committed)
+deployments/31337.json
