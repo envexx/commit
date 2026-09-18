@@ -8,7 +8,7 @@ import { CheckCircle2, Copy, ExternalLink, FileText, Link2, SearchX } from 'luci
 import { useVault } from '@/hooks/useVault'
 import { useVaultEvents } from '@/hooks/useVaultEvents'
 import { VaultState, STATE_META, isTerminal } from '@/lib/state'
-import { explorerAddress, targetChain } from '@/lib/config'
+import { explorerAddress, explorerTx, targetChain } from '@/lib/config'
 import { parseMetadataUri, periodLabel, shortAddress } from '@/lib/format'
 import { loadRecords, type MilestoneRecord } from '@/lib/registry'
 import { hashText } from '@/lib/format'
@@ -136,7 +136,7 @@ function MilestoneDetail({ vaultAddress }: { vaultAddress: Address }) {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
             <p className="text-[11px] font-semibold uppercase tracking-[0.24em] opacity-70">
-              Milestone status
+              Verified on Arc · read straight from the chain
             </p>
             <div className="mt-2 flex flex-wrap items-center gap-3">
               <StatusBadge state={status.state} size="lg" />
@@ -195,6 +195,29 @@ function MilestoneDetail({ vaultAddress }: { vaultAddress: Address }) {
                   <span className="font-mono text-xs">{shortAddress(vaultAddress)}</span>
                 )}
               </Row>
+              {status.fundedAt > 0n &&
+                (() => {
+                  const fundingTx = logs.find((l) => l.eventName === 'MilestoneFunded')?.transactionHash
+                  if (!fundingTx) return null
+                  const txUrl = explorerTx(fundingTx)
+                  return (
+                    <Row label="Funding transaction">
+                      {txUrl ? (
+                        <a
+                          href={txUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-1 font-mono text-xs text-brand hover:underline"
+                        >
+                          {shortAddress(fundingTx)}
+                          <ExternalLink className="h-3 w-3" aria-hidden />
+                        </a>
+                      ) : (
+                        <span className="font-mono text-xs">{shortAddress(fundingTx)}</span>
+                      )}
+                    </Row>
+                  )
+                })()}
               <Row label="Work deadline">
                 {status.state === VaultState.Created ? (
                   <span className="text-ink0">{periodLabel(config.submissionPeriod)} after funding</span>
@@ -244,7 +267,7 @@ function MilestoneDetail({ vaultAddress }: { vaultAddress: Address }) {
                 {status.evidenceURI}
               </a>
               <p className="mt-2 break-all font-mono text-[10px] text-ink0">
-                {hashText(status.evidenceURI) === status.evidenceHash ? 'hash verified âœ“ ' : ''}
+                {hashText(status.evidenceURI) === status.evidenceHash ? 'hash verified ✓ ' : ''}
                 evidenceHash: {status.evidenceHash}
               </p>
               {!isTerminal(status.state) && status.submittedAt > 0n && (

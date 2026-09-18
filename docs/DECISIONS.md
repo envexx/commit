@@ -196,3 +196,22 @@ through one `useTx` hook: wallet send → receipt wait → invalidate queries, w
 "rejected in wallet" and revert messages surfaced inline. The created-vs-funded
 distinction from P1 is enforced visually (UNFUNDED vs FUNDED banner plus an
 explicit "do not start work" card shown to the contractor pre-funding).
+
+## Phase 4: UI V2 — guided payment workflow (18 September 2026)
+
+### ED-14: Role-first workflow home replaces the monitoring dashboard
+The connected home no longer opens with stat tiles. `/` is adaptive:
+disconnected → the narrative landing (shared component with `/about`); 
+connected → a workflow home ("What do you want to do?" intent cards, then
+"Your Work" split into `Getting paid` / `Paying` tabs). `MilestoneCard`
+renders a 4-step lifecycle (Terms agreed → Payment secured → Work submitted
+→ Payment released) with a per-state, per-role NEXT STEP call to action —
+translated from the 10-state machine by the pure module `lib/lifecycle.ts`;
+crypto detail is demoted to a verification line (human → financial →
+on-chain proof). Cards are hook-free and backed by one length-guarded
+interleaved `getConfig`+`getStatus` multicall in `WorkHome`. Also fixed here:
+`getConfig`/`getStatus` return positional arrays (multiple flat ABI outputs),
+so `useVault` now normalizes through `parseVaultConfig`/`parseVaultStatus`
+instead of casting the raw array to the object types (previously
+`status.state` was `undefined` at runtime on any live read). Design language:
+`docs/UI-V2-WORKFLOW.md`.

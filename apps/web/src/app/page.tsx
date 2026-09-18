@@ -1,5 +1,5 @@
-import { Dashboard } from '@/components/Dashboard'
+import { AdaptiveHome } from '@/components/work/AdaptiveHome'
 
 export default function HomePage() {
-  return <Dashboard />
+  return <AdaptiveHome />
 }

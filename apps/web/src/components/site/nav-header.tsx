@@ -11,9 +11,8 @@ import { BrandLockup } from '@/components/site/brand-lockup'
 import { cn } from '@/lib/utils'
 
 const NAV = [
-  { href: '/', label: 'Dashboard' },
-  { href: '/milestones', label: 'My milestones' },
-  { href: '/about', label: 'About' },
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'How it works' },
 ]
 
 export function NavHeader() {
@@ -47,7 +46,7 @@ export function NavHeader() {
           </nav>
 
           <ButtonLink href="/create" size="sm" arrow className="hidden sm:inline-flex">
-            New milestone
+            Protect a payment
           </ButtonLink>
           <ConnectButton />
 
@@ -102,7 +101,7 @@ export function NavHeader() {
                     onClick={() => setOpen(false)}
                     className={buttonVariants({ className: 'w-full' })}
                   >
-                    New milestone
+                    Protect a payment
                   </Link>
                 </div>
               </Dialog.Content>

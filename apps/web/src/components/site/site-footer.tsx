@@ -7,7 +7,7 @@ const COLUMNS: { title: string; links: { label: string; href: string; external?:
   {
     title: 'Product',
     links: [
-      { label: 'Dashboard', href: '/' },
+      { label: 'Home', href: '/' },
       { label: 'Create a milestone', href: '/create' },
       { label: 'Open a shared link', href: '/milestone' },
     ],
@@ -77,7 +77,7 @@ export function SiteFooter() {
 
       <div className="border-t border-line-light">
         <div className="container-fx flex flex-col items-center justify-between gap-2 py-5 text-xs text-ink-muted sm:flex-row">
-          <p>Â© 2026 {SITE.name}</p>
+          <p>© 2026 {SITE.name}</p>
           <p className="font-mono">
             {chainLabel} · chain {targetChain.id} · USDC settled
           </p>

@@ -23,9 +23,9 @@ export const SOCIALS: SocialLink[] = [
 ]
 
 export const PRODUCT_LINKS = [
-  { href: '/', label: 'Dashboard', hint: 'Everything on one screen' },
-  { href: '/create', label: 'Create a milestone', hint: 'Commit USDC before work starts' },
-  { href: '/about', label: 'About', hint: 'Why Arc Milestone Assurance' },
+  { href: '/', label: 'Home', hint: 'Your payments and your work' },
+  { href: '/create', label: 'Protect a payment', hint: 'Commit USDC before work starts' },
+  { href: '/about', label: 'How it works', hint: 'Why Arc Milestone Assurance' },
 ]
 
 export const BUILD_LINKS = [

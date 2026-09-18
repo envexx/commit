@@ -29,6 +29,42 @@ export type VaultStatusData = {
   contractorCancelProposed: boolean
 }
 
+// getConfig/getStatus declare multiple flat ABI outputs, so viem decodes the
+// result as a positional array — the raw data must never be cast straight to
+// the object types above. Mapping order is coupled to the outputs order in
+// src/lib/abi.ts; update both together.
+export function parseVaultConfig(raw: unknown): VaultConfigData | undefined {
+  if (!Array.isArray(raw) || raw.length !== 8) return undefined
+  return {
+    client: raw[0] as Address,
+    contractor: raw[1] as Address,
+    token: raw[2] as Address,
+    amount: raw[3] as bigint,
+    scopeHash: raw[4] as `0x${string}`,
+    metadataURI: raw[5] as string,
+    submissionPeriod: raw[6] as bigint,
+    reviewPeriod: raw[7] as bigint,
+  }
+}
+
+export function parseVaultStatus(raw: unknown): VaultStatusData | undefined {
+  if (!Array.isArray(raw) || raw.length !== 10) return undefined
+  const state = Number(raw[0])
+  if (!Number.isInteger(state) || state < 0 || state > 9) return undefined
+  return {
+    state: state as VaultState,
+    fundedAt: raw[1] as bigint,
+    submitDeadline: raw[2] as bigint,
+    submittedAt: raw[3] as bigint,
+    reviewDeadline: raw[4] as bigint,
+    evidenceHash: raw[5] as `0x${string}`,
+    evidenceURI: raw[6] as string,
+    revisionCount: Number(raw[7]),
+    clientCancelProposed: raw[8] as boolean,
+    contractorCancelProposed: raw[9] as boolean,
+  }
+}
+
 export function useVaultConfig(address?: Address) {
   const query = useReadContract({
     abi: vaultAbi,
@@ -37,7 +73,7 @@ export function useVaultConfig(address?: Address) {
     query: { enabled: !!address },
   })
   return {
-    config: query.data as VaultConfigData | undefined,
+    config: parseVaultConfig(query.data),
     isLoading: query.isLoading,
     error: query.error,
   }
@@ -51,7 +87,7 @@ export function useVaultStatus(address?: Address) {
     query: { enabled: !!address, refetchInterval: 15_000 },
   })
   return {
-    status: query.data as VaultStatusData | undefined,
+    status: parseVaultStatus(query.data),
     isLoading: query.isLoading,
     error: query.error,
   }
