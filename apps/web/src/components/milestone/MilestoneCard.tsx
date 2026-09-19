@@ -76,14 +76,14 @@ export function MilestoneCard({
   return (
     <article
       className={cn(
-        'group relative rounded-3xl border border-line-light bg-white p-6 transition duration-200 hover:-translate-y-1 hover:border-brand/40 hover:shadow-card-light',
+        'group relative border border-line-light bg-panel p-6 transition duration-200 hover:bg-canvas',
         view.requiresMyAction && 'border-brand/50 shadow-[0_0_0_1px_rgba(255,85,0,0.25)]',
         className,
       )}
     >
       <Link
         href={detailHref}
-        className="block after:absolute after:inset-0 after:rounded-3xl after:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60 focus-visible:ring-offset-2"
+        className="block after:absolute after:inset-0 after:content-[''] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand/60 focus-visible:ring-offset-2"
       >
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
@@ -95,7 +95,7 @@ export function MilestoneCard({
               <span className="font-mono text-[11px]">{shortAddress(counterparty)}</span>
             </p>
           </div>
-          <span className="shrink-0 rounded-full border border-line-light bg-zinc-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-ink-muted">
+          <span className="shrink-0 rounded-full border border-line-light bg-canvas px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-ink-muted">
             {role === 'client' ? 'you pay' : 'you get paid'}
           </span>
         </div>
@@ -118,7 +118,7 @@ export function MilestoneCard({
         <LifecycleStepper steps={view.steps} className="mt-5 border-t border-line-light pt-4" />
 
         {view.nextStep && (
-          <div className="mt-4 rounded-2xl border border-line-light bg-zinc-50 p-4">
+          <div className="mt-4 border border-line-light bg-canvas p-4">
             <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-ink-muted">
               Next step
             </p>
@@ -130,7 +130,7 @@ export function MilestoneCard({
                   'mt-3 inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition',
                   view.requiresMyAction
                     ? 'bg-brand text-white shadow-glow group-hover:bg-brand-strong'
-                    : 'border border-line-light bg-white text-ink group-hover:border-zinc-300',
+                    : 'border border-line-light bg-panel text-ink group-hover:border-line-strong',
                 )}
               >
                 {view.nextStep.ctaLabel}

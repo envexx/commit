@@ -1,4 +1,4 @@
-# Arc Milestone Assurance
+# Commit
 
 ## Master Product, Business, Research & Engineering Roadmap
 
@@ -174,13 +174,13 @@ Reason: it converts a concrete existing pain into a small primitive with clear e
 
 # 7. Product Thesis, Positioning & Narrative
 
-Working product name: Arc Milestone Assurance (placeholder; rename later).
+Working product name: Commit.
 
 Category:
 Conditional payment / funded milestone infrastructure.
 
 Positioning statement:
-For independent contractors and small agencies that already have clients, Arc Milestone Assurance is a lightweight funded-milestone layer that proves the money exists before work begins and releases USDC according to agreed completion rules. Unlike a marketplace, it does not own the client relationship or require talent discovery.
+For independent contractors and small agencies that already have clients, Commit is a lightweight funded-milestone layer that proves the money exists before work begins and releases USDC according to agreed completion rules. Unlike a marketplace, it does not own the client relationship or require talent discovery.
 
 One-line narrative:
 Never start unfunded work again.
@@ -1039,7 +1039,7 @@ Microgrant success is not user count. It is credible proof that the primitive wo
 
 # 34. Recommended README Structure
 
-# Arc Milestone Assurance
+# Commit
 Never start unfunded work again.
 
 ## Problem

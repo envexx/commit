@@ -4,7 +4,7 @@
 > V1 "dashboard monitoring" layout. Origin: the V2 redesign direction agreed
 > in the Figma session (the Figma file was not updated — the Figma connector
 > hit its plan's call limit — so V2 landed directly in code). Related:
-> `Design.md` (visual tokens, unchanged), `DECISIONS.md` (ED-14).
+> `DESIGN.md` (visual tokens, unchanged), `DECISIONS.md` (ED-14).
 
 ## 1. The problem with V1
 

@@ -21,7 +21,7 @@ export function Countdown({ deadlineSec }: { deadlineSec: bigint | number | unde
   const expired = Number(deadlineSec) * 1000 <= (now ?? 0)
   return (
     <span
-      className={cn('inline-flex items-center gap-1.5 font-mono text-xs', expired ? 'text-rose-400' : 'text-ink')}
+      className={cn('inline-flex items-center gap-1.5 font-mono text-xs', expired ? 'text-rose-600' : 'text-ink')}
       title={new Date(Number(deadlineSec) * 1000).toLocaleString()}
     >
       <Clock className="h-3.5 w-3.5 opacity-70" aria-hidden />

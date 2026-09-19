@@ -2,7 +2,7 @@
 
 > Scope: `apps/web` (Next.js static export). Covers the audit session of
 > 2026-09-17: what was checked, defects found, fixes applied, and verification
-> evidence. Related: `DECISIONS.md`, `Design.md`.
+> evidence. Related: `DECISIONS.md`, `DESIGN.md`.
 
 ## 1. Summary
 

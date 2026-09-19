@@ -6,24 +6,42 @@ export const BRAND_SPRING = { type: 'spring' as const, stiffness: 380, damping: 
 
 export function BrandGlyph({ className }: { className?: string }) {
   return (
-    <span
-      className={cn(
-        'flex h-9 w-9 items-center justify-center rounded-xl bg-brand text-sm font-black text-white shadow-glow',
-        className,
-      )}
-    >
-      A
-    </span>
+    <img
+      src="/brand/commit-logo.png"
+      alt=""
+      aria-hidden
+      width={36}
+      height={36}
+      className={cn('h-9 w-9 select-none object-contain', className)}
+    />
   )
 }
 
-export function BrandLockup({ className }: { className?: string }) {
+export function BrandLockup({
+  className,
+  tone = 'dark',
+}: {
+  className?: string
+  tone?: 'dark' | 'light'
+}) {
   return (
     <div className={cn('flex items-center gap-2.5', className)}>
       <BrandGlyph />
       <span className="flex flex-col leading-tight">
-        <span className="font-display text-sm font-bold tracking-tight text-ink">{SITE.name}</span>
-        <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-ink-muted">
+        <span
+          className={cn(
+            'font-display text-sm font-bold tracking-tight',
+            tone === 'light' ? 'text-white' : 'text-ink',
+          )}
+        >
+          {SITE.name}
+        </span>
+        <span
+          className={cn(
+            'text-[10px] font-semibold uppercase tracking-[0.18em]',
+            tone === 'light' ? 'text-white/60' : 'text-ink-muted',
+          )}
+        >
           {chainLabel}
         </span>
       </span>

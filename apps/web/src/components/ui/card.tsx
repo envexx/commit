@@ -12,7 +12,7 @@ export function Card({
 }) {
   const tones = {
     dark: 'card-dark',
-    deep: 'rounded-3xl border border-line-dark bg-surface-deep',
+    deep: 'border border-line-light bg-panel',
     light: 'card-light',
     glass: 'card-glass',
   }
@@ -20,9 +20,5 @@ export function Card({
 }
 
 export function CardEyebrow({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <p className={cn('text-[11px] font-semibold uppercase tracking-[0.2em] text-zinc-500', className)}>
-      {children}
-    </p>
-  )
+  return <p className={cn('label-mono', className)}>{children}</p>
 }

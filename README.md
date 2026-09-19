@@ -1,4 +1,4 @@
-# Arc Milestone Assurance
+# Commit
 
 **Pre-funded USDC milestones on Arc.** The money exists before the work starts;
 release follows agreed rules, not promises.
@@ -12,7 +12,7 @@ nothing guarantees release after a valid delivery.
 
 ## What it does
 
-Arc Milestone Assurance is a minimal, non-custodial payment commitment
+Commit is a minimal, non-custodial payment commitment
 primitive. For one agreement, the client deploys a dedicated vault and commits
 an exact USDC amount before work starts. The contractor can prove the money
 exists onchain, submits evidence against a scope hash, and settlement runs by
@@ -50,7 +50,7 @@ submission.
 ## Mainnet Contract
 
 > Pending — deployment evidence is recorded in
-> [`DEMO_EVIDENCE.md`](./DEMO_EVIDENCE.md) as soon as the verified mainnet
+> [`DEMO_EVIDENCE.md`](./docs/DEMO_EVIDENCE.md) as soon as the verified mainnet
 > deployment happens.
 
 | Item | Value |
@@ -61,7 +61,7 @@ submission.
 
 ## Demo Transactions
 
-See [`DEMO_EVIDENCE.md`](./DEMO_EVIDENCE.md). Local rehearsal (anvil) is fully
+See [`DEMO_EVIDENCE.md`](./docs/DEMO_EVIDENCE.md). Local rehearsal (anvil) is fully
 scripted and reproducible; mainnet tx hashes are appended at deployment.
 
 ## Architecture
@@ -146,7 +146,7 @@ Web: `cd apps/web && npx tsc --noEmit && npm run build`.
   for agencies, public registry of settled milestones.
 - **Later (protocol):** agent-commerce primitive — AI agents pay each other in
   pre-funded milestones; extension modules per §28 of the
-  [master roadmap](./Arc_Milestone_Assurance_Master_Product_Roadmap.md).
+  [master roadmap](./docs/ROADMAP.md).
 
 Engineering status and open gaps are tracked honestly in
 [`docs/IMPLEMENTATION-REPORT.md`](./docs/IMPLEMENTATION-REPORT.md).

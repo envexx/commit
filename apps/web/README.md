@@ -1,4 +1,4 @@
-# Arc Milestone Assurance — Web App
+# Commit — Web App
 
 Next.js (App Router) + wagmi/viem frontend for the MilestoneVault contracts
 (`packages/contracts`). Static-exportable; money state is read directly from

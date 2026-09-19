@@ -12,14 +12,14 @@ export type BadgeTone =
   | 'outline'
 
 const TONES: Record<BadgeTone, string> = {
-  neutral: 'border-white/10 bg-white/[0.06] text-zinc-300',
-  brand: 'border-brand/40 bg-brand/15 text-brand',
-  success: 'border-emerald-500/40 bg-emerald-500/15 text-emerald-300',
-  warning: 'border-amber-500/40 bg-amber-500/15 text-amber-300',
-  danger: 'border-rose-500/40 bg-rose-500/15 text-rose-300',
-  violet: 'border-violet-500/40 bg-violet-500/15 text-violet-300',
-  light: 'border-line-light bg-white text-ink',
-  outline: 'border-line-dark bg-transparent text-zinc-400',
+  neutral: 'border-line-light bg-canvas text-ink-muted',
+  brand: 'border-brand/50 bg-brand/10 text-brand-strong',
+  success: 'border-emerald-600/40 bg-emerald-500/10 text-emerald-700',
+  warning: 'border-amber-600/40 bg-amber-500/10 text-amber-700',
+  danger: 'border-rose-600/40 bg-rose-500/10 text-rose-700',
+  violet: 'border-violet-500/40 bg-violet-500/10 text-violet-700',
+  light: 'border-line-light bg-panel text-ink',
+  outline: 'border-line-strong bg-transparent text-ink-muted',
 }
 
 export function Badge({

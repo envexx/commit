@@ -5,8 +5,7 @@ import { useRouter } from 'next/navigation'
 import { ArrowRight } from 'lucide-react'
 import { parseMilestoneInput } from '@/lib/milestone-input'
 
-const INPUT_CLASS =
-  'w-full rounded-2xl border border-line-light bg-white px-3.5 py-3 text-sm text-ink outline-none transition placeholder:text-ink-muted focus:border-brand/60 disabled:opacity-60'
+const INPUT_CLASS = 'field'
 
 /**
  * The contractor's entry point: paste the link (or bare address) the client
@@ -56,7 +55,7 @@ export function OpenSharedMilestoneForm({
         <button
           type="submit"
           aria-label="Open milestone"
-          className="grid h-[46px] w-[46px] shrink-0 place-items-center rounded-2xl bg-brand text-white shadow-glow transition hover:bg-brand-strong"
+          className="grid h-[46px] w-[46px] shrink-0 place-items-center bg-brand text-white shadow-glow transition hover:bg-brand-strong"
         >
           <ArrowRight className="h-4 w-4" aria-hidden />
         </button>

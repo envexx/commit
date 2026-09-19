@@ -17,37 +17,38 @@ export function RoleIntentCards({
 }) {
   return (
     <div className="grid gap-4 sm:grid-cols-2">
-      <div className="flex flex-col rounded-3xl border border-brand/30 bg-brand/[0.04] p-7">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand-strong">
+      <div className="flex flex-col border border-brand/40 bg-brand/[0.05] p-7">
+        <p className="label-mono flex items-center gap-2 text-brand-strong">
+          <span className="inline-block h-1.5 w-1.5 bg-brand" />
           I&rsquo;m hiring someone
         </p>
-        <h2 className="mt-3 font-display text-xl font-bold tracking-tight text-ink">
+        <h2 className="heading-retro mt-4 text-xl font-bold text-ink">
           Protect a new payment
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+        <p className="mt-3 text-sm leading-relaxed text-ink-muted">
           Create the milestone, secure the USDC, then share it with your
           contractor. The money is provably there before work starts.
         </p>
-        <div className="mt-5">
+        <div className="mt-6">
           <ButtonLink href="/create" size="sm" arrow>
             Protect a payment
           </ButtonLink>
         </div>
       </div>
 
-      <div className="flex flex-col rounded-3xl border border-line-light bg-white p-7">
-        <p className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.24em] text-ink-muted">
+      <div className="flex flex-col border border-line-light bg-panel p-7">
+        <p className="label-mono flex items-center gap-2">
           <KeyRound className="h-3.5 w-3.5" aria-hidden />
           I&rsquo;m doing the work
         </p>
-        <h2 className="mt-3 font-display text-xl font-bold tracking-tight text-ink">
+        <h2 className="heading-retro mt-4 text-xl font-bold text-ink">
           Check if my payment is secured
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+        <p className="mt-3 text-sm leading-relaxed text-ink-muted">
           Open the milestone from your client and verify the money exists
           before starting. Never begin unfunded work.
         </p>
-        <div className="mt-5">
+        <div className="mt-6">
           <OpenSharedMilestoneForm inputRef={openInputRef} />
         </div>
       </div>

@@ -35,7 +35,7 @@ function Tooltip({ children }: { children: React.ReactNode }) {
   const reduced = useReducedMotion()
   return (
     <motion.span
-      className="pointer-events-none absolute -top-7 left-1/2 z-50 whitespace-nowrap rounded-md border px-1.5 py-0.5 text-[9.5px] text-foreground/85"
+          className="pointer-events-none absolute -top-7 left-1/2 z-50 whitespace-nowrap border px-1.5 py-0.5 text-[9.5px] text-foreground/85"
       style={{
         background: "hsl(var(--card))",
         borderColor: "hsl(var(--foreground) / 0.08)",

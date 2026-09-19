@@ -71,7 +71,7 @@ export function ScreenShuffle({
         return (
           <motion.div
             key={screen.id}
-            className="absolute left-1/2 top-1/2 w-[360px] overflow-hidden rounded-xl border border-foreground/[0.04]"
+            className="absolute left-1/2 top-1/2 w-[360px] overflow-hidden border border-foreground/[0.04]"
             style={{ aspectRatio: "1495 / 1024", transformOrigin: "50% 60%" }}
             animate={{
               x: `calc(-50% + ${slot * SX}px)`,
@@ -107,7 +107,7 @@ export function ScreenShuffle({
                     <span className="h-[9%] w-3/5 rounded-full bg-foreground/[0.07]" />
                     <span className="h-[9%] w-4/6 rounded-full bg-foreground/[0.05]" />
                   </div>
-                  <div className="flex-1 rounded-lg border border-foreground/[0.07] bg-background/25" />
+                  <div className="flex-1 border border-foreground/[0.07] bg-background/25" />
                 </div>
               </div>
             )}

@@ -5,7 +5,7 @@ import { lifecycleFor, type PartyRole } from '@/lib/lifecycle'
 import { STATE_META, VaultState, isTerminal } from '@/lib/state'
 import type { MilestoneRecord } from '@/lib/registry'
 import type { VaultConfigData } from '@/hooks/useVault'
-import { MilestoneCard } from '@/components/MilestoneCard'
+import { MilestoneCard } from '@/components/milestone/MilestoneCard'
 
 // QA matrix: every state × role rendered through the real card. Dev-only —
 // safe to delete before submission.
@@ -52,10 +52,11 @@ const CASES: (VaultState | undefined)[] = [
 export default function LifecycleMatrixPage() {
   return (
     <div className="container-fx py-10 md:py-14">
-      <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">
+      <p className="label-mono flex items-center gap-2 text-brand-strong">
+        <span className="inline-block h-1.5 w-1.5 bg-brand" />
         QA · internal
       </p>
-      <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink">
+      <h1 className="heading-retro mt-4 text-3xl font-bold text-ink">
         Lifecycle matrix
       </h1>
       <p className="mt-2 max-w-2xl text-sm text-ink-muted">

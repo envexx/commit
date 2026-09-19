@@ -59,10 +59,10 @@ function describe(log: TimelineLog, clientAddr: string, contractorAddr: string):
     case 'MutualCancelProposed':
       return {
         label: `Mutual cancel proposed by ${shortAddress(String((args as { proposer?: string }).proposer ?? ''))}`,
-        tone: 'border-line-light bg-zinc-50',
+        tone: 'border-line-light bg-canvas',
       }
     default:
-      return { label: log.eventName, tone: 'border-line-light bg-zinc-50' }
+      return { label: log.eventName, tone: 'border-line-light bg-canvas' }
   }
 }
 
@@ -77,7 +77,7 @@ export function Timeline({
 }) {
   if (logs.length === 0) {
     return (
-      <p className="text-sm text-ink0">
+      <p className="text-sm text-ink-muted">
         No onchain activity yet. Every state change will appear here with its transaction.
       </p>
     )
@@ -91,11 +91,11 @@ export function Timeline({
         return (
           <li
             key={`${log.blockNumber}-${log.transactionHash ?? i}-${i}`}
-            className={`rounded-2xl border px-4 py-3.5 ${item.tone}`}
+            className={`border px-4 py-3.5 ${item.tone}`}
           >
             <div className="flex flex-wrap items-baseline justify-between gap-2">
               <p className="text-sm font-medium text-ink">{item.label}</p>
-              <span className="font-mono text-[11px] text-ink0">block {log.blockNumber.toString()}</span>
+              <span className="font-mono text-[11px] text-ink-muted">block {log.blockNumber.toString()}</span>
             </div>
             {item.detail && <p className="mt-1 break-all text-xs text-ink-muted">{item.detail}</p>}
             {txUrl && (

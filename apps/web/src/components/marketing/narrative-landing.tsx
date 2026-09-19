@@ -21,8 +21,8 @@ import {
   Timer,
   Wallet,
 } from 'lucide-react'
-import { GlowRibbon } from '@/components/fx/fx'
 import { Reveal } from '@/components/fx/reveal'
+import { ScrollSequenceHero } from '@/components/marketing/scroll-sequence-hero'
 import { Badge } from '@/components/ui/badge'
 import { ButtonLink } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -53,15 +53,17 @@ function SectionHeading({
 }) {
   return (
     <div className={cn('max-w-2xl', align === 'center' && 'mx-auto text-center')}>
-      <p className={cn('text-[11px] font-semibold uppercase tracking-[0.24em]', dark ? 'text-brand' : 'text-brand-strong')}>
-        {eyebrow}
-      </p>
-      <h2
+      <p
         className={cn(
-          'mt-3 font-display text-3xl font-bold tracking-tight sm:text-4xl',
-          dark ? 'text-zinc-50' : 'text-ink',
+          'label-mono flex items-center gap-2',
+          align === 'center' && 'justify-center',
+          dark ? 'text-brand' : 'text-brand-strong',
         )}
       >
+        <span className="inline-block h-1.5 w-1.5 bg-brand" />
+        {eyebrow}
+      </p>
+      <h2 className={cn('heading-retro mt-4 text-3xl font-bold sm:text-4xl', dark ? 'text-zinc-50' : 'text-ink')}>
         {title}
       </h2>
       {description && (
@@ -77,7 +79,7 @@ function SocialCard({ name, url, note }: { name: string; url: string | null; not
   const icon = SOCIAL_ICONS[name]
   const inner = (
     <>
-      <span className="flex h-11 w-11 items-center justify-center rounded-2xl border border-line-dark bg-white/[0.03] text-zinc-200 transition group-hover:border-brand/50 group-hover:text-brand">
+      <span className="flex h-11 w-11 items-center justify-center border border-line-light bg-canvas text-ink transition group-hover:border-brand group-hover:text-brand-strong">
         {icon ? (
           <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden>
             <path d={icon.path} />
@@ -86,17 +88,17 @@ function SocialCard({ name, url, note }: { name: string; url: string | null; not
           <ExternalLink className="h-5 w-5" aria-hidden />
         )}
       </span>
-      <span className="mt-4 flex items-center gap-2 text-sm font-semibold text-zinc-100">
+      <span className="mt-4 flex items-center gap-2 text-sm font-semibold text-ink">
         {name}
         {!url && <Badge tone="outline" className="px-2 py-0.5 text-[10px]">soon</Badge>}
       </span>
-      <span className="mt-1 text-xs text-zinc-500">{url ? 'Open profile' : note ?? 'Link coming'}</span>
+      <span className="mt-1 text-xs text-ink-muted">{url ? 'Open profile' : note ?? 'Link coming'}</span>
     </>
   )
 
   if (!url) {
     return (
-      <div className="group flex cursor-default flex-col rounded-2xl border border-line-dark bg-white/[0.02] p-5">
+      <div className="group flex cursor-default flex-col border border-line-light bg-panel p-5">
         {inner}
       </div>
     )
@@ -107,7 +109,7 @@ function SocialCard({ name, url, note }: { name: string; url: string | null; not
       href={url}
       target="_blank"
       rel="noreferrer"
-      className="group flex flex-col rounded-2xl border border-line-dark bg-white/[0.02] p-5 transition hover:-translate-y-1 hover:border-brand/40"
+      className="group flex flex-col border border-line-light bg-panel p-5 transition hover:shadow-hard-sm"
     >
       {inner}
     </a>
@@ -138,51 +140,48 @@ const STACK_META = [
 export function NarrativeLanding() {
   return (
     <div className="space-y-0">
-      <section className="relative overflow-hidden border-b border-line-dark bg-base">
-        <GlowRibbon />
-        <div className="container-fx relative flex min-h-[78vh] flex-col justify-center py-24 md:py-32">
-          <Reveal>
-            <p className="font-mono text-[11px] font-semibold uppercase tracking-[0.3em] text-zinc-500">
-              Pre-funded USDC milestones · Arc mainnet
-            </p>
-          </Reveal>
-          <Reveal delay={0.05}>
-            <h1 className="mt-6 max-w-4xl font-display text-4xl font-medium leading-[1.08] tracking-tight sm:text-5xl md:text-6xl lg:text-[4.25rem]">
-              <span className="text-zinc-500">Never start </span>
-              <span className="text-zinc-50">unfunded work</span>
-              <span className="text-zinc-500"> again.</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={0.1}>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-zinc-400 sm:text-lg">
-              An invoice records a debt after the work. A funded milestone proves the money exists before
-              it — committed onchain, released by agreed rules, never by promises.
-            </p>
-          </Reveal>
-          <Reveal delay={0.15}>
-            <div className="mt-10 flex flex-wrap items-center gap-3">
-              <ButtonLink
-                href="/create"
-                size="lg"
-                arrow
-                className="text-xs font-bold uppercase tracking-[0.14em]"
-              >
-                Create a milestone
-              </ButtonLink>
-              <ButtonLink
-                href="/about#how"
-                variant="outline"
-                size="lg"
-                className="text-xs font-bold uppercase tracking-[0.14em]"
-              >
-                How settlement works
-              </ButtonLink>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <ScrollSequenceHero
+        className="border-b border-line-light"
+        scenes={[
+          <p
+            key="eyebrow"
+            className="font-mono text-[11px] font-semibold uppercase tracking-[0.24em] text-brand"
+          >
+            Pre-funded USDC milestones · Arc Mainnet
+          </p>,
+          <h1
+            key="headline"
+            className="heading-retro mt-5 text-4xl font-bold text-zinc-50 sm:text-5xl md:text-6xl lg:text-[4.5rem]"
+          >
+            <span className="text-zinc-50">Work funded.</span>
+            <span className="text-zinc-400"> Payment proven.</span>
+          </h1>,
+          <p key="sub" className="mt-6 max-w-xl text-base leading-relaxed text-zinc-200/90 sm:text-lg">
+            Funds are locked before work begins and released only when proof meets the agreed terms. No
+            promises. Just verifiable execution.
+          </p>,
+          <div key="cta" className="mt-9 flex flex-wrap items-center gap-3">
+            <ButtonLink
+              href="/create"
+              size="lg"
+              arrow
+              className="text-xs font-bold uppercase tracking-[0.14em]"
+            >
+              Create a milestone
+            </ButtonLink>
+            <ButtonLink
+              href="/about#how"
+              variant="outlineLight"
+              size="lg"
+              className="text-xs font-bold uppercase tracking-[0.14em]"
+            >
+              How settlement works
+            </ButtonLink>
+          </div>,
+        ]}
+      />
 
-      <section className="bg-surface-gray section-y">
+      <section className="bg-grid-retro border-b border-line-light bg-canvas section-y">
         <div className="container-fx">
           <SectionHeading
             eyebrow="Arc at a glance"
@@ -190,14 +189,17 @@ export function NarrativeLanding() {
             description="Stablecoins solved how digital dollars move. This is what a digital dollar does when it stays committed until a milestone is submitted and accepted."
             align="center"
           />
-          <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+          <div className="mt-10 grid grid-cols-1 border-l border-t border-line-light sm:grid-cols-2 md:grid-cols-4">
             {TICKER.map((item, i) => (
               <Reveal key={item.title} delay={i * 0.05}>
-                <div className="group flex h-full flex-col rounded-2xl border border-line-light bg-white p-5 transition duration-200 hover:-translate-y-1">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand/10 text-brand-strong">
+                <div className="group flex h-full flex-col border-b border-r border-line-light bg-panel p-5 transition duration-200 hover:bg-canvas">
+                  <p className="label-mono">0{i + 1}</p>
+                  <span className="mt-4 flex h-10 w-10 items-center justify-center border border-line-light bg-brand/10 text-brand-strong">
                     <item.icon className="h-5 w-5" aria-hidden />
                   </span>
-                  <p className="mt-4 text-sm font-semibold text-ink">{item.title}</p>
+                  <p className="mt-4 font-display text-sm font-bold uppercase tracking-wide text-ink">
+                    {item.title}
+                  </p>
                   <p className="mt-1 text-xs text-ink-muted">{item.meta}</p>
                 </div>
               </Reveal>
@@ -206,20 +208,20 @@ export function NarrativeLanding() {
         </div>
       </section>
 
-      <section className="bg-white section-y">
+      <section className="bg-grid-retro border-b border-line-light bg-canvas section-y">
         <div className="container-fx">
           <SectionHeading
             eyebrow="Core guarantee"
-            title="The two promises this product enforces"
-            description="One rule for each side of the agreement, written into the vault before anyone starts working."
+            title="One rule for each side, written before work starts"
+            description="The contractor never starts unfunded. The client never pays unproven. Both promises live in the same vault, and neither side can move the money alone."
           />
 
           <div className="mt-10 grid gap-4 lg:grid-cols-3">
             <Reveal className="lg:col-span-1">
-              <div className="flex h-full flex-col justify-between rounded-3xl bg-brand p-7 text-white shadow-stack-2">
+              <div className="flex h-full flex-col justify-between border border-brand bg-brand p-7 text-white">
                 <div>
-                  <Badge className="border-white/30 bg-white/15 text-white">Contractor</Badge>
-                  <h3 className="mt-5 font-display text-2xl font-bold leading-snug">
+                  <Badge className="border-white/40 bg-white/15 text-white">Contractor</Badge>
+                  <h3 className="heading-retro mt-5 text-2xl font-bold">
                     Do not start work until the money exists.
                   </h3>
                 </div>
@@ -233,10 +235,10 @@ export function NarrativeLanding() {
             <Reveal delay={0.05} className="lg:col-span-2">
               <Card tone="light" className="flex h-full flex-col justify-between p-7">
                 <div>
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-ink text-white">
+                  <span className="flex h-11 w-11 items-center justify-center border border-line-light bg-ink text-white">
                     <FileCheck2 className="h-5 w-5" aria-hidden />
                   </span>
-                  <h3 className="mt-5 font-display text-2xl font-bold tracking-tight text-ink">
+                  <h3 className="heading-retro mt-5 text-2xl font-bold text-ink">
                     Do not release money until the work is submitted.
                   </h3>
                   <p className="mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
@@ -245,7 +247,7 @@ export function NarrativeLanding() {
                     window the client pre-agreed to.
                   </p>
                 </div>
-                <div className="mt-8 overflow-hidden rounded-2xl border border-line-light">
+                <div className="mt-8 border border-line-light">
                   {[
                     ['Vault balance', 'amount committed'],
                     ['Scope', 'keccak256 commitment'],
@@ -253,9 +255,9 @@ export function NarrativeLanding() {
                   ].map(([k, v]) => (
                     <div
                       key={k}
-                      className="flex items-center justify-between border-b border-line-light bg-surface-gray/60 px-4 py-3 last:border-b-0"
+                      className="flex items-center justify-between border-b border-line-light bg-canvas px-4 py-3 last:border-b-0"
                     >
-                      <span className="text-xs uppercase tracking-wide text-ink-muted">{k}</span>
+                      <span className="label-mono">{k}</span>
                       <span className="font-mono text-xs text-ink">{v}</span>
                     </div>
                   ))}
@@ -265,10 +267,10 @@ export function NarrativeLanding() {
 
             <Reveal delay={0.1}>
               <Card tone="light" className="h-full p-7">
-                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand/10 text-brand-strong">
+                <span className="flex h-11 w-11 items-center justify-center border border-line-light bg-brand/10 text-brand-strong">
                   <ShieldCheck className="h-5 w-5" aria-hidden />
                 </span>
-                <h3 className="mt-5 font-display text-xl font-bold tracking-tight text-ink">
+                <h3 className="heading-retro mt-5 text-xl font-bold text-ink">
                   Release follows agreed rules, not promises.
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-ink-muted">
@@ -280,14 +282,14 @@ export function NarrativeLanding() {
             </Reveal>
 
             <Reveal delay={0.15}>
-              <div id="security" className="flex h-full flex-col rounded-3xl border border-white/10 bg-[#0A0A0B] p-7 shadow-stack-2">
-                <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand/15 text-brand">
+              <div id="security" className="flex h-full flex-col border border-line-light bg-panel p-7">
+                <span className="flex h-11 w-11 items-center justify-center border border-line-light bg-brand/10 text-brand-strong">
                   <Ban className="h-5 w-5" aria-hidden />
                 </span>
-                <h3 className="mt-5 font-display text-xl font-bold tracking-tight text-zinc-50">
+                <h3 className="heading-retro mt-5 text-xl font-bold text-ink">
                   A disagreement cannot silently drain the vault.
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-zinc-400">
+                <p className="mt-3 text-sm leading-relaxed text-ink-muted">
                   Raising a dispute pauses the timeout release. In V1 a dispute ends only by client
                   approval or a bilateral mutual cancel. No administrator, no platform key, no seizure
                   function exists in the contract.
@@ -298,18 +300,17 @@ export function NarrativeLanding() {
         </div>
       </section>
 
-      <section id="how" className="bg-white pb-16 md:pb-24">
+      <section id="how" className="bg-grid-retro border-b border-line-light bg-canvas pb-16 md:pb-24">
         <div className="container-fx">
           <Reveal>
-            <div className="relative overflow-hidden rounded-3xl bg-surface-deep p-8 md:p-12">
-              <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-brand/20 blur-3xl" />
+            <div className="relative border border-line-light bg-panel p-8 md:p-12">
               <div className="relative grid gap-8 md:grid-cols-[1fr_1.1fr] md:items-start">
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">Process</p>
-                  <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-zinc-50 sm:text-4xl">
-                    Why Arc Milestone Assurance?
+                  <p className="label-mono text-brand">Process</p>
+                  <h2 className="heading-retro mt-3 text-3xl font-bold text-ink sm:text-4xl">
+                    Why Commit?
                   </h2>
-                  <p className="mt-4 max-w-md text-sm leading-relaxed text-zinc-400">
+                  <p className="mt-4 max-w-md text-sm leading-relaxed text-ink-muted">
                     One primitive, three irreversible steps. Money is committed, work is proven, and
                     settlement is executed by code — every step a verifiable transaction on Arc.
                   </p>
@@ -318,7 +319,7 @@ export function NarrativeLanding() {
                       Create a milestone
                     </ButtonLink>
                   </div>
-                  <div className="mt-8 rounded-2xl border border-line-dark bg-white/[0.02] p-5">
+                  <div className="mt-8 border border-line-light bg-canvas p-5">
                     <OnboardingChecklist
                       title="A milestone, step by step"
                       className="w-full max-w-[320px]"
@@ -332,21 +333,23 @@ export function NarrativeLanding() {
                   </div>
                 </div>
 
-                <ol className="relative space-y-8 border-l border-white/10 pl-8">
-                  <span className="absolute left-[-1px] top-2 h-[70%] w-0.5 bg-gradient-to-b from-brand to-transparent" />
+                <ol className="relative space-y-8 border-l border-line-light pl-8">
+                  <span className="absolute left-[-1px] top-2 h-[70%] w-px bg-brand" />
                   {[
                     { step: 'Commit', tag: 'FUNDED', body: 'The client deploys a milestone vault and moves the exact USDC amount into it. Immutable amount, parties and deadlines.' },
                     { step: 'Prove', tag: 'SUBMITTED', body: 'The contractor submits the deliverable URL and its hash onchain. The review clock starts, deterministic from the chain timestamp.' },
                     { step: 'Settle', tag: 'SETTLED', body: 'Approval or review-window timeout releases USDC to the contractor. No submission before the deadline refunds the client.' },
                   ].map((node, i) => (
                     <li key={node.step} className="relative">
-                      <span className="absolute -left-[41px] top-1.5 h-3 w-3 rounded-full bg-brand shadow-glow" />
+                      <span className="absolute -left-[41px] top-1.5 h-3 w-3 border border-brand bg-panel" />
                       <div className="flex flex-wrap items-center gap-3">
-                        <span className="font-mono text-xs text-zinc-500">0{i + 1}</span>
-                        <h3 className="font-display text-lg font-bold text-zinc-50">{node.step}</h3>
+                        <span className="font-mono text-xs text-ink-muted">0{i + 1}</span>
+                        <h3 className="font-display text-lg font-bold uppercase tracking-wide text-ink">
+                          {node.step}
+                        </h3>
                         <Badge tone="brand">{node.tag}</Badge>
                       </div>
-                      <p className="mt-2 max-w-lg text-sm leading-relaxed text-zinc-400">{node.body}</p>
+                      <p className="mt-2 max-w-lg text-sm leading-relaxed text-ink-muted">{node.body}</p>
                     </li>
                   ))}
                 </ol>
@@ -356,9 +359,9 @@ export function NarrativeLanding() {
                 <ScreenShuffle
                   caption="funded → review → settled"
                   screens={[
-                    { id: 'funded', grad: 'linear-gradient(135deg, #3a2412 0%, #201709 55%, var(--surface) 100%)', tint: 'rgba(255,119,0,0.55)' },
-                    { id: 'review', grad: 'linear-gradient(135deg, #3a2f12 0%, #1f1909 55%, var(--surface) 100%)', tint: 'rgba(232,180,90,0.5)' },
-                    { id: 'settled', grad: 'linear-gradient(135deg, #123a33 0%, #0c1f1d 55%, var(--surface) 100%)', tint: 'rgba(52,194,138,0.5)' },
+                    { id: 'funded', grad: 'linear-gradient(135deg, #3a2412 0%, #201709 55%, #efece6 100%)', tint: 'rgba(255,119,0,0.55)' },
+                    { id: 'review', grad: 'linear-gradient(135deg, #3a2f12 0%, #1f1909 55%, #efece6 100%)', tint: 'rgba(232,180,90,0.5)' },
+                    { id: 'settled', grad: 'linear-gradient(135deg, #123a33 0%, #0c1f1d 55%, #efece6 100%)', tint: 'rgba(52,194,138,0.5)' },
                   ]}
                 />
               </div>
@@ -367,15 +370,15 @@ export function NarrativeLanding() {
         </div>
       </section>
 
-      <section id="limits" className="bg-surface-gray section-y">
+      <section id="limits" className="bg-grid-retro border-b border-line-light bg-canvas section-y">
         <div className="container-fx">
           <SectionHeading
             eyebrow="Honest boundaries"
             title="What V1 does not promise"
-            description="Assurance is narrow on purpose. These limits are shown to both parties before funding — never buried."
+            description="Commit is narrow on purpose. These limits are shown to both parties before funding — never buried."
             align="center"
           />
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
+          <div className="mt-10 grid border-l border-t border-line-light md:grid-cols-3">
             {[
               {
                 icon: BadgeCheck,
@@ -394,11 +397,11 @@ export function NarrativeLanding() {
               },
             ].map((item, i) => (
               <Reveal key={item.title} delay={i * 0.05}>
-                <div className="h-full rounded-3xl border border-line-light bg-white p-7 transition duration-200 hover:-translate-y-1">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-surface-gray text-ink">
+                <div className="h-full border-b border-r border-line-light bg-panel p-7 transition duration-200 hover:bg-canvas">
+                  <span className="flex h-11 w-11 items-center justify-center border border-line-light bg-canvas text-ink">
                     <item.icon className="h-5 w-5" aria-hidden />
                   </span>
-                  <h3 className="mt-5 font-display text-lg font-bold tracking-tight text-ink">{item.title}</h3>
+                  <h3 className="heading-retro mt-5 text-lg font-bold text-ink">{item.title}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-ink-muted">{item.body}</p>
                 </div>
               </Reveal>
@@ -407,7 +410,7 @@ export function NarrativeLanding() {
         </div>
       </section>
 
-      <section className="bg-white section-y">
+      <section className="bg-grid-retro border-b border-line-light bg-canvas section-y">
         <div className="container-fx grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:items-center">
           <Reveal>
             <div>
@@ -419,7 +422,7 @@ export function NarrativeLanding() {
               <ul className="mt-8 space-y-5">
                 {VALUE_POINTS.map((point) => (
                   <li key={point.title} className="flex gap-4">
-                    <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand/10 text-brand-strong">
+                    <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center border border-line-light bg-brand/10 text-brand-strong">
                       <point.icon className="h-4 w-4" aria-hidden />
                     </span>
                     <div>
@@ -432,14 +435,16 @@ export function NarrativeLanding() {
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 border-l border-t border-line-light sm:grid-cols-2">
             {STACK_META.map((item, i) => (
               <Reveal key={item.name} delay={i * 0.05}>
-                <div className="group h-full rounded-2xl border border-line-light bg-surface-gray/60 p-5 transition duration-200 hover:-translate-y-1 hover:bg-white">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-ink shadow-sm">
+                <div className="group h-full border-b border-r border-line-light bg-panel p-5 transition duration-200 hover:bg-canvas">
+                  <span className="flex h-10 w-10 items-center justify-center border border-line-light bg-canvas text-ink">
                     <item.icon className="h-5 w-5" aria-hidden />
                   </span>
-                  <p className="mt-4 font-display text-base font-bold text-ink">{item.name}</p>
+                  <p className="mt-4 font-display text-base font-bold uppercase tracking-wide text-ink">
+                    {item.name}
+                  </p>
                   <p className="mt-1 text-xs leading-relaxed text-ink-muted">{item.body}</p>
                 </div>
               </Reveal>
@@ -448,21 +453,21 @@ export function NarrativeLanding() {
         </div>
       </section>
 
-      <section className="bg-surface-gray section-y">
+      <section className="bg-grid-retro border-b border-line-light bg-canvas section-y">
         <div className="container-fx">
           <Reveal>
-            <div className="grid gap-10 rounded-3xl border border-line-light bg-surface-gray/60 p-8 md:grid-cols-2 md:items-center md:p-12">
-              <div className="relative h-[340px] w-full">
+            <div className="grid border border-line-light bg-panel md:grid-cols-2 md:items-center">
+              <div className="relative h-[340px] w-full border-b border-line-light md:border-b-0 md:border-r">
                 <BrowserWindow
                   variant="chrome"
                   headerStyle="full"
                   showNavButtons
                   showActions
-                  url="assurance.app/milestone?address=0x7a3f…1c2e"
+                  url="commit.app/milestone?address=0x7a3f…1c2e"
                 >
                   <div className="flex h-full flex-col gap-4 p-5">
                     <div className="flex items-center justify-between">
-                      <span className="rounded-full border border-emerald-500/40 bg-emerald-500/15 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-emerald-300">
+                      <span className="border border-emerald-600/40 bg-emerald-500/10 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-wider text-emerald-700">
                         settled
                       </span>
                       <span className="font-mono text-base font-bold text-foreground">1,250.00 USDC</span>
@@ -477,7 +482,7 @@ export function NarrativeLanding() {
                         <div key={k} className="flex items-center gap-3">
                           <span
                             className={cn(
-                              'grid h-5 w-5 place-items-center rounded-full text-[10px] font-bold',
+                              'grid h-5 w-5 place-items-center text-[10px] font-bold',
                               i < 3 ? 'bg-emerald-500 text-white' : 'bg-foreground/10 text-foreground/50',
                             )}
                           >
@@ -497,9 +502,9 @@ export function NarrativeLanding() {
                 </BrowserWindow>
               </div>
 
-              <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand-strong">Spotlight</p>
-                <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink">
+              <div className="p-8 md:p-12">
+                <p className="label-mono text-brand-strong">Spotlight</p>
+                <h2 className="heading-retro mt-3 text-3xl font-bold text-ink">
                   Every state change leaves a verifiable transaction.
                 </h2>
                 <p className="mt-4 text-sm leading-relaxed text-ink-muted">
@@ -521,15 +526,15 @@ export function NarrativeLanding() {
         </div>
       </section>
 
-      <section className="bg-base pt-16 md:pt-24">
+      <section className="bg-grid-retro bg-canvas pt-16 md:pt-24">
         <div className="container-fx">
           <Reveal>
-            <div className="rounded-2xl border border-line-dark bg-surface p-8 text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">Community</p>
-              <h2 className="mt-3 font-display text-2xl font-bold tracking-tight text-zinc-50 sm:text-3xl">
+            <div className="border border-line-light bg-panel p-8 text-center md:p-12">
+              <p className="label-mono justify-center text-brand">Community</p>
+              <h2 className="heading-retro mx-auto mt-3 text-2xl font-bold text-ink sm:text-3xl">
                 Build in the open
               </h2>
-              <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-zinc-400">
+              <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-ink-muted">
                 The contract, the app and the deployment evidence are published for the Arc microgrant
                 submission. Follow along or reach out.
               </p>
@@ -538,11 +543,11 @@ export function NarrativeLanding() {
                   <SocialCard key={social.name} {...social} />
                 ))}
               </div>
-              <div className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs text-zinc-500">
-                <Link href="/create" className="inline-flex items-center gap-1 transition hover:text-brand">
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-4 font-mono text-xs uppercase tracking-wide text-ink-muted">
+                <Link href="/create" className="inline-flex items-center gap-1 transition hover:text-brand-strong">
                   Create a milestone <ArrowRight className="h-3.5 w-3.5" aria-hidden />
                 </Link>
-                <Link href="/milestones" className="transition hover:text-brand">
+                <Link href="/milestones" className="transition hover:text-brand-strong">
                   My milestones
                 </Link>
               </div>

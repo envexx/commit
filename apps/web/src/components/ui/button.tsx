@@ -17,23 +17,20 @@ export type ButtonVariant =
 export type ButtonSize = 'sm' | 'md' | 'lg'
 
 const VARIANTS: Record<ButtonVariant, string> = {
-  primary:
-    'rounded-full bg-brand text-white shadow-glow hover:bg-brand-strong hover:shadow-glow-lg',
-  outline:
-    'rounded-full border border-line-light bg-white text-ink hover:border-zinc-300 hover:bg-surface-soft',
+  primary: 'rounded-full bg-brand text-white hover:bg-brand-strong',
+  outline: 'rounded-full border border-line-strong bg-transparent text-ink hover:bg-ink hover:text-canvas',
   outlineLight:
-    'rounded-full border border-line-light bg-white text-ink hover:border-zinc-400 hover:bg-surface-gray',
-  ghost: 'rounded-full text-ink-muted hover:bg-surface-soft hover:text-ink',
-  danger: 'rounded-full bg-rose-600 text-white shadow-[0_0_24px_rgba(225,29,72,0.35)] hover:bg-rose-500',
-  success:
-    'rounded-full bg-emerald-600 text-white shadow-[0_0_24px_rgba(5,150,105,0.35)] hover:bg-emerald-500',
-  dark: 'rounded-full bg-ink text-white hover:bg-zinc-800',
+    'rounded-full border border-line-light bg-panel text-ink hover:border-ink hover:bg-canvas',
+  ghost: 'rounded-full text-ink-muted hover:bg-ink/[0.06] hover:text-ink',
+  danger: 'rounded-full bg-rose-600 text-white hover:bg-rose-500',
+  success: 'rounded-full bg-emerald-600 text-white hover:bg-emerald-500',
+  dark: 'rounded-full bg-ink text-canvas hover:bg-ink/90',
 }
 
 const SIZES: Record<ButtonSize, string> = {
-  sm: 'px-4 py-2 text-sm',
-  md: 'px-5 py-2.5 text-sm',
-  lg: 'px-7 py-3.5 text-base',
+  sm: 'px-3.5 py-1.5 text-[10px]',
+  md: 'px-4 py-2 text-[11px]',
+  lg: 'px-6 py-3 text-xs',
 }
 
 export function buttonVariants({
@@ -46,7 +43,7 @@ export function buttonVariants({
   className?: string
 } = {}) {
   return cn(
-    'group inline-flex items-center justify-center gap-2 font-semibold transition duration-200 disabled:cursor-not-allowed disabled:opacity-50',
+    'group inline-flex items-center justify-center gap-2 font-mono font-bold uppercase tracking-[0.14em] transition duration-200 disabled:cursor-not-allowed disabled:opacity-50',
     VARIANTS[variant],
     SIZES[size],
     className,

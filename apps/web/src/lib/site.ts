@@ -1,7 +1,7 @@
 export const SITE = {
-  name: 'Arc Milestone Assurance',
-  shortName: 'Assurance',
-  tagline: 'Never start unfunded work again.',
+  name: 'Commit',
+  shortName: 'Commit',
+  tagline: 'Work starts funded. Payment follows proof.',
 }
 
 export const EXTERNAL = {
@@ -25,7 +25,7 @@ export const SOCIALS: SocialLink[] = [
 export const PRODUCT_LINKS = [
   { href: '/', label: 'Home', hint: 'Your payments and your work' },
   { href: '/create', label: 'Protect a payment', hint: 'Commit USDC before work starts' },
-  { href: '/about', label: 'How it works', hint: 'Why Arc Milestone Assurance' },
+  { href: '/about', label: 'How it works', hint: 'Why Commit' },
 ]
 
 export const BUILD_LINKS = [

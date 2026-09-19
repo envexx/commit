@@ -18,7 +18,7 @@ export const STATE_META: Record<
   [VaultState.Created]: {
     label: 'UNFUNDED',
     badge: 'border-zinc-300 bg-zinc-100 text-zinc-600',
-    banner: 'border-line-light bg-zinc-50 text-ink',
+    banner: 'border-line-light bg-canvas text-ink',
     desc: 'Milestone created but no USDC committed yet. Work must not start.',
   },
   [VaultState.Funded]: {
@@ -72,7 +72,7 @@ export const STATE_META: Record<
   [VaultState.CancelledMutual]: {
     label: 'CANCELLED (MUTUAL)',
     badge: 'border-zinc-300 bg-zinc-100 text-zinc-600',
-    banner: 'border-line-light bg-zinc-50 text-ink',
+    banner: 'border-line-light bg-canvas text-ink',
     desc: 'Both parties agreed to cancel. USDC returned to the client.',
   },
 }

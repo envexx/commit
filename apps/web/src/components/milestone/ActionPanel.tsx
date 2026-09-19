@@ -27,14 +27,14 @@ function Panel({
   children: React.ReactNode
 }) {
   return (
-    <section className={cn('rounded-3xl border border-line-light bg-white p-6', tone)}>
-      <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-ink0">{title}</h3>
+    <section className={cn('border border-line-light bg-panel p-6', tone)}>
+      <h3 className="label-mono mb-4">{title}</h3>
       {children}
     </section>
   )
 }
 
-function Note({ children, tone = 'text-ink0' }: { children: React.ReactNode; tone?: string }) {
+function Note({ children, tone = 'text-ink-muted' }: { children: React.ReactNode; tone?: string }) {
   return <p className={cn('mt-3 text-xs leading-relaxed', tone)}>{children}</p>
 }
 
@@ -76,7 +76,7 @@ function SubmitWorkForm({
           value={url}
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://github.com/you/repo/pull/1"
-          className="w-full rounded-2xl border border-line-light bg-white px-3.5 py-3 text-sm text-ink outline-none transition placeholder:text-ink-muted focus:border-brand/60"
+          className="field"
         />
       </div>
       {evidenceHash && (
@@ -129,7 +129,7 @@ function RevisionForm({
           onChange={(e) => setReason(e.target.value)}
           rows={2}
           placeholder="Nav is broken on mobile; please fix and resubmit."
-          className="w-full rounded-2xl border border-line-light bg-white px-3.5 py-3 text-sm text-ink outline-none transition placeholder:text-ink-muted focus:border-brand/60"
+          className="field"
         />
       </div>
       <TxButton onClick={request} pending={busy === 'revise'} variant="outline">
@@ -268,10 +268,10 @@ export function ActionPanel({
           vault. Nothing moves until you approve and fund.
         </p>
         {clientBalance !== undefined && (
-          <p className="mb-4 text-xs text-ink0">
+          <p className="mb-4 text-xs text-ink-muted">
             Your USDC balance: {formatUsdc(clientBalance)}
             {clientBalance < config.amount && (
-              <span className="ml-2 text-rose-400">insufficient for this milestone</span>
+              <span className="ml-2 text-rose-600">insufficient for this milestone</span>
             )}
           </p>
         )}
@@ -294,7 +294,7 @@ export function ActionPanel({
               )
             }
           >
-            {allowance && allowance >= config.amount ? 'USDC approved âœ“' : '1. Approve USDC'}
+            {allowance && allowance >= config.amount ? 'USDC approved ✓' : '1. Approve USDC'}
           </TxButton>
           <TxButton
             variant="success"

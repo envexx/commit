@@ -95,7 +95,7 @@ export function BalanceHeader({
           onClick={() => setHidden((h) => !h)}
           aria-label={hidden ? "Show balances" : "Hide balances"}
           aria-pressed={hidden}
-          className="absolute left-full ml-3 grid h-8 w-8 place-items-center rounded-lg opacity-0 transition-opacity duration-200 hover:bg-foreground/[0.05] focus-visible:opacity-100 group-hover:opacity-100"
+          className="absolute left-full ml-3 grid h-8 w-8 place-items-center opacity-0 transition-opacity duration-200 hover:bg-foreground/[0.05] focus-visible:opacity-100 group-hover:opacity-100"
           style={{ color: TEXT_MUTED }}
         >
           {hidden ? <EyeOff size={17} /> : <Eye size={17} />}

@@ -24,7 +24,7 @@ export function SegmentedControl({ options, value, onChange, className }: Segmen
   const current = value ?? inner
 
   return (
-    <div className={cn("inline-flex items-center gap-0.5 rounded-full border border-foreground/[0.04] p-0.5", className)}>
+    <div className={cn("inline-flex items-center gap-0.5 rounded-full border border-line-light bg-panel p-0.5", className)}>
       {options.map((o) => {
         const on = o === current
         return (
@@ -37,16 +37,15 @@ export function SegmentedControl({ options, value, onChange, className }: Segmen
               onChange?.(o)
             }}
             className={cn(
-              "relative rounded-full px-3 py-1.5 text-[11px] tracking-[0.05em] transition-colors duration-200",
-              on ? "text-foreground" : "text-foreground/40 hover:text-foreground/70",
+              "relative rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.08em] transition-colors duration-200",
+              on ? "text-ink" : "text-ink-muted hover:text-ink",
             )}
           >
             {on && (
               /* transitions.dev sliding-tabs feel: a clean 250ms smooth-out tween */
               <motion.span
                 layoutId={`${uid}-thumb`}
-                className="absolute inset-0 rounded-full bg-foreground/[0.08]"
-                style={{ boxShadow: "inset 0 1px 0 0 hsl(var(--foreground) / 0.06)" }}
+                className="absolute inset-0 rounded-full bg-brand/15"
                 transition={reduced ? { duration: 0 } : { duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
               />
             )}

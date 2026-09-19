@@ -82,7 +82,7 @@ export function OnboardingChecklist({
               type="button"
               onClick={() => toggle(s.id)}
               aria-pressed={on}
-              className="group -mx-2 flex items-center gap-3 rounded-lg px-2 py-2.5 text-left transition-colors duration-150 hover:bg-foreground/[0.02]"
+              className="group -mx-2 flex items-center gap-3 px-2 py-2.5 text-left transition-colors duration-150 hover:bg-foreground/[0.02]"
             >
               <span
                 className="grid h-[18px] w-[18px] shrink-0 place-items-center rounded-full border transition-colors duration-150"

@@ -12,10 +12,10 @@ import { explorerAddress, explorerTx, targetChain } from '@/lib/config'
 import { parseMetadataUri, periodLabel, shortAddress } from '@/lib/format'
 import { loadRecords, type MilestoneRecord } from '@/lib/registry'
 import { hashText } from '@/lib/format'
-import { StatusBadge } from '@/components/StatusBadge'
-import { Countdown } from '@/components/Countdown'
-import { ActionPanel } from '@/components/ActionPanel'
-import { Timeline } from '@/components/Timeline'
+import { StatusBadge } from '@/components/milestone/StatusBadge'
+import { Countdown } from '@/components/milestone/Countdown'
+import { ActionPanel } from '@/components/milestone/ActionPanel'
+import { Timeline } from '@/components/milestone/Timeline'
 import { Badge } from '@/components/ui/badge'
 import { CryptoAmount } from '@/components/ui/amount'
 import { AvatarStack } from '@/components/ui/avatar-stack'
@@ -28,7 +28,7 @@ import { cn } from '@/lib/utils'
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex items-baseline justify-between gap-4 py-2.5">
-      <span className="shrink-0 text-[11px] uppercase tracking-wide text-ink0">{label}</span>
+      <span className="shrink-0 text-[11px] uppercase tracking-wide text-ink-muted">{label}</span>
       <span className="min-w-0 break-words text-right text-sm text-ink">{children}</span>
     </div>
   )
@@ -45,7 +45,7 @@ function PartyLink({ address, role, you }: { address: string; role: string; you:
       ) : (
         <span className="font-mono">{shortAddress(address)}</span>
       )}
-      <span className="ml-2 text-[11px] text-ink0">
+      <span className="ml-2 text-[11px] text-ink-muted">
         {role}
         {you && <span className="ml-1 font-semibold text-emerald-700">· you</span>}
       </span>
@@ -55,8 +55,8 @@ function PartyLink({ address, role, you }: { address: string; role: string; you:
 
 function SidePanel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-3xl border border-line-light bg-white p-5">
-      <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink0">{title}</h2>
+    <div className="border border-line-light bg-panel p-5">
+      <h2 className="label-mono">{title}</h2>
       <div className="mt-3">{children}</div>
     </div>
   )
@@ -86,10 +86,10 @@ function MilestoneDetail({ vaultAddress }: { vaultAddress: Address }) {
   if (isLoading) {
     return (
       <div className="container-fx py-10">
-        <Skeleton className="h-40 w-full rounded-3xl" />
+        <Skeleton className="h-40 w-full" />
         <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_360px]">
-          <Skeleton className="h-64 w-full rounded-3xl" />
-          <Skeleton className="h-64 w-full rounded-3xl" />
+          <Skeleton className="h-64 w-full" />
+          <Skeleton className="h-64 w-full" />
         </div>
       </div>
     )
@@ -132,10 +132,10 @@ function MilestoneDetail({ vaultAddress }: { vaultAddress: Address }) {
 
   return (
     <div className="container-fx py-10 md:py-14">
-      <div className={cn('rounded-3xl border p-6 md:p-8', stateMeta.banner)}>
+      <div className={cn('border p-6 md:p-8', stateMeta.banner)}>
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.24em] opacity-70">
+            <p className="label-mono opacity-70">
               Verified on Arc · read straight from the chain
             </p>
             <div className="mt-2 flex flex-wrap items-center gap-3">
@@ -163,8 +163,8 @@ function MilestoneDetail({ vaultAddress }: { vaultAddress: Address }) {
         <div className="space-y-6">
           <ActionPanel vaultAddress={vaultAddress} config={config} status={status} account={account} />
 
-          <section className="rounded-3xl border border-line-light bg-white p-6">
-            <h2 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-ink0">
+          <section className="border border-line-light bg-panel p-6">
+            <h2 className="label-mono mb-4">
               Activity timeline
             </h2>
             <Timeline logs={logs} clientAddr={config.client} contractorAddr={config.contractor} />
@@ -220,7 +220,7 @@ function MilestoneDetail({ vaultAddress }: { vaultAddress: Address }) {
                 })()}
               <Row label="Work deadline">
                 {status.state === VaultState.Created ? (
-                  <span className="text-ink0">{periodLabel(config.submissionPeriod)} after funding</span>
+                  <span className="text-ink-muted">{periodLabel(config.submissionPeriod)} after funding</span>
                 ) : (
                   <Countdown deadlineSec={status.submitDeadline} />
                 )}
@@ -247,13 +247,13 @@ function MilestoneDetail({ vaultAddress }: { vaultAddress: Address }) {
             {scopeText ? (
               <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-ink">{scopeText}</p>
             ) : (
-              <p className="mt-3 break-all font-mono text-[11px] text-ink0">{config.metadataURI}</p>
+              <p className="mt-3 break-all font-mono text-[11px] text-ink-muted">{config.metadataURI}</p>
             )}
             <p className="mt-3 break-all font-mono text-[10px] text-ink-muted">scopeHash: {config.scopeHash}</p>
           </SidePanel>
 
           {status.evidenceURI && (
-            <div className="rounded-3xl border border-amber-500/30 bg-amber-50 p-5">
+            <div className="border border-amber-500/30 bg-amber-50 p-5">
               <h2 className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-700">
                 Submitted evidence
               </h2>
@@ -266,12 +266,12 @@ function MilestoneDetail({ vaultAddress }: { vaultAddress: Address }) {
                 <FileText className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
                 {status.evidenceURI}
               </a>
-              <p className="mt-2 break-all font-mono text-[10px] text-ink0">
+              <p className="mt-2 break-all font-mono text-[10px] text-ink-muted">
                 {hashText(status.evidenceURI) === status.evidenceHash ? 'hash verified ✓ ' : ''}
                 evidenceHash: {status.evidenceHash}
               </p>
               {!isTerminal(status.state) && status.submittedAt > 0n && (
-                <p className="mt-2 text-xs text-ink0">
+                <p className="mt-2 text-xs text-ink-muted">
                   Submitted {new Date(Number(status.submittedAt) * 1000).toLocaleString()}
                 </p>
               )}
@@ -279,7 +279,7 @@ function MilestoneDetail({ vaultAddress }: { vaultAddress: Address }) {
           )}
 
           <SidePanel title="Share">
-            <p className="flex items-start gap-2 text-xs leading-relaxed text-ink0">
+            <p className="flex items-start gap-2 text-xs leading-relaxed text-ink-muted">
               <Link2 className="mt-0.5 h-3.5 w-3.5 shrink-0" aria-hidden />
               Send this page to the other party. State is read straight from the chain — no account needed
               and no backend that can lie about the money.
@@ -323,7 +323,7 @@ export default function MilestonePage() {
     <Suspense
       fallback={
         <div className="container-fx py-10">
-          <Skeleton className="h-40 w-full rounded-3xl" />
+          <Skeleton className="h-40 w-full" />
         </div>
       }
     >

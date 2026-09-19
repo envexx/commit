@@ -4,31 +4,16 @@ import { type ReactNode } from "react"
 
 import { cn } from "@/lib/utils"
 
-const SURFACE = "hsl(var(--card))"
-const SURFACE_DEEP = "hsl(var(--card))"
-
-const EnvelopeGlyph = (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-    <path
-      d="M3 8l9 5 9-5M4.8 5h14.4c1 0 1.8.8 1.8 1.8v10.4c0 1-.8 1.8-1.8 1.8H4.8c-1 0-1.8-.8-1.8-1.8V6.8C3 5.8 3.8 5 4.8 5z"
-      stroke="var(--muted-foreground)"
-      strokeWidth="1.4"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-)
-
 /**
- * "Nothing yet" register in the Resend style: a dotted field, a hairline icon
- * chip, one line of ink and one quiet action. The emptiness is the design;
- * nothing decorates it.
+ * "Nothing yet" register in the app's retro language: a hairline panel, a
+ * square icon chip, one line of ink and one quiet action. The emptiness is the
+ * design; nothing decorates it.
  */
 export function EmptyState({
-  icon = EnvelopeGlyph,
-  title = "No emails sent yet",
-  hint = "your first send appears here in real time",
-  action = "Send a test email",
+  icon,
+  title = "Nothing here yet",
+  hint = "this space fills in as the work moves",
+  action = "Get started",
   onAction,
   className,
 }: {
@@ -42,24 +27,25 @@ export function EmptyState({
 }) {
   return (
     <div
-      className={cn("flex w-full max-w-[420px] flex-col items-center rounded-xl border border-foreground/[0.03] px-8 py-12", className)}
-      style={{
-        background: "radial-gradient(hsl(var(--foreground) / 0.05) 1px, transparent 1px) 0 0 / 14px 14px, " + SURFACE_DEEP,
-      }}
+      className={cn(
+        "flex w-full max-w-[420px] flex-col items-center border border-line-light bg-panel bg-grid-retro px-8 py-12 text-center",
+        className,
+      )}
     >
-      <span
-        className="grid h-9 w-9 place-items-center rounded-[10px] border border-foreground/[0.04]"
-        style={{ background: SURFACE, boxShadow: "inset 0 1px 0 0 hsl(var(--foreground) / 0.06)" }}
-      >
-        {icon}
-      </span>
-      <p className="mt-4 text-[13px] text-foreground/75">{title}</p>
-      <p className="mt-1 text-[11px] text-foreground/35">{hint}</p>
+      {icon && (
+        <span className="grid h-10 w-10 place-items-center border border-line-light bg-brand/10 text-brand-strong">
+          {icon}
+        </span>
+      )}
+      <p className="mt-4 font-display text-sm font-bold uppercase tracking-wide text-ink">{title}</p>
+      <p className="mt-2 max-w-[280px] font-mono text-[11px] uppercase leading-relaxed tracking-wide text-ink-muted">
+        {hint}
+      </p>
       {action && (
         <button
           type="button"
           onClick={onAction}
-          className="mt-5 rounded-full border border-foreground/[0.04] bg-foreground/[0.03] px-4 py-1.5 text-[11px] text-foreground/75 transition-all duration-150 hover:bg-foreground/[0.06] hover:text-foreground active:scale-[0.98]"
+          className="mt-6 rounded-full bg-brand px-4 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-white transition hover:bg-brand-strong"
         >
           {action}
         </button>

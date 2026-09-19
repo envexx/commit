@@ -21,7 +21,7 @@ export function ConnectButton() {
   if (isConnected && address) {
     return (
       <div className="flex items-center gap-2">
-        <span className="flex items-center gap-2 rounded-full border border-line-light bg-white px-3.5 py-2 font-mono text-xs text-ink">
+        <span className="flex items-center gap-2 rounded-full border border-line-light bg-panel px-3.5 py-2 font-mono text-xs text-ink">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
           {shortAddress(address)}
         </span>

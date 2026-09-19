@@ -1,6 +1,6 @@
 # DEMO EVIDENCE
 
-> Deployment and transaction evidence for Arc Milestone Assurance.
+> Deployment and transaction evidence for Commit.
 > Rule: every claim in this file is a verifiable onchain artifact — address,
 > tx hash, or reproducible local script. Nothing here is a screenshot-only
 > claim. `_TBD_` entries are filled at mainnet deployment.

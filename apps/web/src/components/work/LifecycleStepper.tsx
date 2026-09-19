@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 
 const MARKER: Record<StepMark, string> = {
   done: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-700',
-  todo: 'border-line-light bg-white text-ink-muted',
+  todo: 'border-line-light bg-panel text-ink-muted',
   current: 'border-brand/50 bg-brand/10 text-brand-strong',
   attention: 'border-amber-500/40 bg-amber-50 text-amber-700',
   outcome: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-700',

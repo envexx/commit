@@ -1,19 +1,24 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { decodeEventLog, erc20Abi, isAddress, parseUnits, type Address } from 'viem'
 import { useAccount, usePublicClient, useWriteContract } from 'wagmi'
 import { AlertTriangle, CheckCircle2, Rocket, ShieldCheck } from 'lucide-react'
 import { factoryAbi, vaultAbi } from '@/lib/abi'
-import { FACTORY_ADDRESS, USDC_ADDRESS, explorerTx, isConfigured } from '@/lib/config'
+import { FACTORY_ADDRESS, USDC_ADDRESS, explorerTx, isConfigured, targetChain } from '@/lib/config'
 import { buildMetadataUri, hashText } from '@/lib/format'
 import { formatUsdc, periodLabel, shortAddress } from '@/lib/format'
-import { saveRecord } from '@/lib/registry'
+import {
+  saveRecord,
+  loadCreateDraft,
+  saveCreateDraft,
+  clearCreateDraft,
+} from '@/lib/registry'
 import { useTx } from '@/hooks/useTx'
 import { useToast } from '@/components/ui/toast'
-import { TxButton, TxError, TxLink } from '@/components/TxButton'
+import { TxButton, TxError, TxLink } from '@/components/milestone/TxButton'
 import { Badge } from '@/components/ui/badge'
 import { SegmentedControl } from '@/components/ui/segmented-control'
 
@@ -42,6 +47,54 @@ export default function CreatePage() {
   const [step, setStep] = useState<Step>('form')
   const [vaultAddress, setVaultAddress] = useState<Hash | null>(null)
   const [createTx, setCreateTx] = useState<Hash | null>(null)
+  const [history, setHistory] = useState<{ label: string; hash: Hash }[]>([])
+  const [resumed, setResumed] = useState(false)
+  const stepPanelRef = useRef<HTMLDivElement | null>(null)
+  const restoredRef = useRef(false)
+  const completedRef = useRef(false)
+
+  const chainId = publicClient?.chain?.id ?? targetChain.id
+
+  const addHistory = (label: string, hash: Hash) =>
+    setHistory((prev) => (prev.some((h) => h.hash === hash) ? prev : [...prev, { label, hash }]))
+
+  const resetCreate = () => {
+    if (address) clearCreateDraft(chainId, address)
+    completedRef.current = false
+    setStep('form')
+    setVaultAddress(null)
+    setCreateTx(null)
+    setHistory([])
+    setResumed(false)
+    tx.reset()
+  }
+
+  // Reload safety: a deployed-but-unfunded vault resumes at the top-up step
+  // instead of vanishing when the tab is refreshed.
+  useEffect(() => {
+    if (restoredRef.current || !address) return
+    restoredRef.current = true
+    const draft = loadCreateDraft(chainId, address)
+    if (draft?.vaultAddress) {
+      setVaultAddress(draft.vaultAddress as Hash)
+      setCreateTx((draft.createTx as Hash | null) ?? null)
+      setHistory(
+        draft.history.map((h) => ({ label: h.label, hash: h.hash as Hash })).slice(0, 20),
+      )
+      setStep('created')
+      setResumed(true)
+    }
+  }, [address, chainId])
+
+  // Persist every step so the record outlives the component.
+  useEffect(() => {
+    if (!address || !vaultAddress || completedRef.current) return
+    saveCreateDraft(chainId, address, {
+      vaultAddress,
+      createTx,
+      history: history.map((h) => ({ label: h.label, hash: h.hash })),
+    })
+  }, [address, chainId, vaultAddress, createTx, history])
 
   const amount = useMemo(() => {
     try {
@@ -88,6 +141,7 @@ export default function CreatePage() {
       {
         onConfirmed: async (hash) => {
           setCreateTx(hash)
+          addHistory('Milestone vault deployed', hash)
           const receipt = await publicClient.getTransactionReceipt({ hash })
           let vault: Hash | null = null
           for (const log of receipt.logs) {
@@ -114,6 +168,7 @@ export default function CreatePage() {
             createdAt: Date.now(),
           })
           setStep('created')
+          setTimeout(() => stepPanelRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 60)
         },
       },
     )
@@ -135,6 +190,7 @@ export default function CreatePage() {
       }),
     )
     if (result.ok) {
+      if (result.hash) addHistory('USDC approved', result.hash)
       toast({ tone: 'success', title: 'USDC approved', description: 'Fund the milestone next.' })
     } else {
       toast({ tone: 'error', title: 'Approval failed', description: result.error ?? undefined })
@@ -147,6 +203,9 @@ export default function CreatePage() {
       writeContractAsync({ abi: vaultAbi, address: vaultAddress, functionName: 'fundMilestone' }),
     )
     if (result.ok) {
+      if (result.hash) addHistory('Milestone funded', result.hash)
+      completedRef.current = true
+      if (address) clearCreateDraft(chainId, address)
       toast({ tone: 'success', title: 'Milestone funded', description: 'The money is committed onchain.' })
       router.push(`/milestone?address=${vaultAddress}`)
     } else {
@@ -154,24 +213,26 @@ export default function CreatePage() {
     }
   }
 
-  const inputClass =
-    'w-full rounded-2xl border border-line-light bg-white px-3.5 py-3 text-sm text-ink outline-none transition placeholder:text-ink-muted focus:border-brand/60 disabled:opacity-60'
+  const inputClass = 'field'
 
   const summaryRow = (label: string, value: React.ReactNode) => (
     <div className="flex items-baseline justify-between gap-4 py-2">
-      <span className="text-xs uppercase tracking-wide text-ink0">{label}</span>
+      <span className="text-xs uppercase tracking-wide text-ink-muted">{label}</span>
       <span className="text-right text-sm text-ink">{value}</span>
     </div>
   )
 
   return (
-    <div className="container-fx py-10 md:py-14">
+      <div className="container-fx py-10 md:py-14">
       <div className="max-w-2xl">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">Client flow</p>
-        <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink">
+        <p className="label-mono flex items-center gap-2 text-brand-strong">
+          <span className="inline-block h-1.5 w-1.5 bg-brand" />
+          Client flow
+        </p>
+        <h1 className="heading-retro mt-4 text-3xl font-bold text-ink sm:text-4xl">
           Create a funded milestone
         </h1>
-        <p className="mt-2 text-sm leading-relaxed text-ink0">
+        <p className="mt-3 text-sm leading-relaxed text-ink-muted">
           You are the client. The vault locks your USDC until the agreed rules fire — nothing is paid out
           on creation.
         </p>
@@ -180,7 +241,7 @@ export default function CreatePage() {
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
         <div className="space-y-5">
           {!configured && (
-            <div className="flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-50 p-4 text-sm text-amber-800">
+            <div className="flex items-start gap-3 border border-amber-500/30 bg-amber-50 p-4 text-sm text-amber-800">
               <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden />
               <p>
                 Contracts are not configured for this network yet. Set{' '}
@@ -191,7 +252,7 @@ export default function CreatePage() {
           )}
 
           {!address && (
-            <div className="rounded-2xl border border-line-light bg-white p-4 text-sm text-ink">
+            <div className="border border-line-light bg-panel p-4 text-sm text-ink">
               Connect a wallet to create a milestone.
             </div>
           )}
@@ -206,10 +267,10 @@ export default function CreatePage() {
               className={`${inputClass} font-mono`}
             />
             {contractor.length > 0 && !contractorValid && (
-              <p className="mt-1 text-xs text-rose-400">Not a valid address.</p>
+              <p className="mt-1 text-xs text-rose-600">Not a valid address.</p>
             )}
             {selfContractor && (
-              <p className="mt-1 text-xs text-rose-400">Contractor must differ from your wallet.</p>
+              <p className="mt-1 text-xs text-rose-600">Contractor must differ from your wallet.</p>
             )}
           </div>
 
@@ -227,7 +288,7 @@ export default function CreatePage() {
           <div>
             <label className="mb-1.5 block text-sm font-medium text-ink">
               Scope / success criteria
-              <span className="ml-2 text-xs font-normal text-ink0">hashed onchain as the commitment</span>
+              <span className="ml-2 text-xs font-normal text-ink-muted">hashed onchain as the commitment</span>
             </label>
             <textarea
               value={scope}
@@ -253,7 +314,7 @@ export default function CreatePage() {
                 disabled={step !== 'form'}
                 className={inputClass}
               />
-              {amountInput && !amount && <p className="mt-1 text-xs text-rose-400">Invalid amount.</p>}
+              {amountInput && !amount && <p className="mt-1 text-xs text-rose-600">Invalid amount.</p>}
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-ink">Work deadline</label>
@@ -277,25 +338,25 @@ export default function CreatePage() {
                 value={`${reviewDays}d`}
                 onChange={(v) => setReviewDays(Number(v.replace('d', '')))}
               />
-              <p className="mt-1.5 text-[11px] text-ink0">after a submission, no client action releases to contractor</p>
+              <p className="mt-1.5 text-[11px] text-ink-muted">after a submission, no client action releases to contractor</p>
             </div>
           </div>
 
           {step === 'form' ? (
-            <div className="rounded-3xl border border-line-light bg-white p-6">
+            <div className="border border-line-light bg-panel p-6">
               <TxButton onClick={create} pending={tx.pending} disabled={!formValid || !address || !configured} arrow>
                 <Rocket className="h-4 w-4" aria-hidden />
                 Create milestone — deploy vault
               </TxButton>
               <TxError error={tx.error} />
               <TxLink hash={tx.txHash} />
-              <p className="mt-4 text-xs leading-relaxed text-ink0">
+              <p className="mt-4 text-xs leading-relaxed text-ink-muted">
                 Two transactions total: this one deploys the milestone vault, the next approves and moves
                 the USDC. Arc gas is paid in USDC — fractions of a cent.
               </p>
             </div>
           ) : (
-            <div className="space-y-5 rounded-3xl border border-emerald-500/30 bg-emerald-500/[0.06] p-6">
+            <div ref={stepPanelRef} className="space-y-5 border border-emerald-500/30 bg-emerald-500/[0.06] p-6">
               <div>
                 <p className="flex items-center gap-2 text-sm font-semibold text-emerald-700">
                   <CheckCircle2 className="h-4 w-4" aria-hidden />
@@ -305,7 +366,7 @@ export default function CreatePage() {
                   <p className="mt-2 break-all font-mono text-[11px] text-ink-muted">
                     vault: {vaultAddress}{' '}
                     <Link href={`/milestone?address=${vaultAddress}`} className="text-brand hover:underline">
-                      open â†—
+                      open →
                     </Link>
                   </p>
                 )}
@@ -316,10 +377,16 @@ export default function CreatePage() {
                     rel="noreferrer"
                     className="mt-1 inline-block font-mono text-[11px] text-brand hover:underline"
                   >
-                    creation transaction â†—
+                    creation transaction →
                   </a>
                 )}
               </div>
+              {resumed && (
+                <p className="border border-brand/30 bg-brand/[0.05] px-3 py-2 text-xs leading-relaxed text-ink">
+                  Resumed from your last visit. This vault is deployed and still waiting for the top-up —
+                  nothing was lost.
+                </p>
+              )}
               <div className="flex flex-wrap gap-3">
                 <TxButton variant="outline" pending={tx.pending} onClick={approve}>
                   2. Approve USDC
@@ -330,18 +397,63 @@ export default function CreatePage() {
               </div>
               <TxError error={tx.error} />
               <TxLink hash={tx.txHash} />
-              <p className="text-xs leading-relaxed text-ink0">
+              <p className="text-xs leading-relaxed text-ink-muted">
                 Until step 3 completes the milestone stays{' '}
                 <span className="font-semibold text-ink">UNFUNDED</span> — the contractor is warned not
-                to start.
+                to start. This step is saved, so a refresh resumes right here.
               </p>
+              <button
+                type="button"
+                onClick={resetCreate}
+                className="font-mono text-[11px] uppercase tracking-wide text-ink-muted underline-offset-4 transition hover:text-brand hover:underline"
+              >
+                Start over with a new milestone
+              </button>
             </div>
           )}
         </div>
 
         <aside className="space-y-4">
-          <div className="rounded-3xl border border-line-light bg-white p-5">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-ink0">Summary</p>
+          <div className="border border-line-light bg-panel p-5">
+            <p className="label-mono flex items-center gap-2">
+              <Rocket className="h-3.5 w-3.5 text-brand" aria-hidden />
+              Transaction history
+            </p>
+            {history.length === 0 ? (
+              <p className="mt-3 text-xs leading-relaxed text-ink-muted">
+                Every step writes a transaction on Arc. Each hash appears here as you go: deploy the
+                vault, approve USDC, then fund the milestone.
+              </p>
+            ) : (
+              <ol className="mt-3 space-y-3">
+                {history.map((entry) => {
+                  const url = explorerTx(entry.hash)
+                  return (
+                    <li key={entry.hash} className="border-l-2 border-brand/50 pl-3">
+                      <p className="text-xs font-semibold text-ink">{entry.label}</p>
+                      {url ? (
+                        <a
+                          href={url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mt-0.5 inline-flex items-center gap-1 font-mono text-[10px] text-brand hover:underline"
+                        >
+                          view on explorer →
+                        </a>
+                      ) : (
+                        <span className="mt-0.5 block break-all font-mono text-[10px] text-ink-muted">
+                          {entry.hash}
+                        </span>
+                      )}
+                    </li>
+                  )
+                })}
+              </ol>
+            )}
+          </div>
+
+          <div className="border border-line-light bg-panel p-5">
+            <p className="label-mono">Summary</p>
             <div className="mt-3 divide-y divide-line-light">
               {summaryRow('Client (you)', address ? shortAddress(address) : '—')}
               {summaryRow('Contractor', contractorValid ? shortAddress(contractor) : '—')}
@@ -351,8 +463,8 @@ export default function CreatePage() {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-line-light bg-white p-5">
-            <p className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-ink0">
+          <div className="border border-line-light bg-panel p-5">
+            <p className="label-mono flex items-center gap-2">
               <ShieldCheck className="h-3.5 w-3.5 text-brand" aria-hidden />
               Agreed rules
             </p>

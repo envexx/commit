@@ -38,3 +38,42 @@ export function deleteRecord(chainId: number, address: string) {
     JSON.stringify(records.filter((r) => r.address !== address)),
   )
 }
+
+export type CreateDraft = {
+  vaultAddress: string
+  createTx: string | null
+  history: { label: string; hash: string }[]
+}
+
+const draftKeyFor = (chainId: number, client: string) =>
+  `arc.create.draft.${chainId}.${client.toLowerCase()}`
+
+/**
+ * In-progress create flow: survives a reload so a deployed-but-unfunded vault
+ * is never lost between the deploy and the approve/fund steps.
+ */
+export function loadCreateDraft(chainId: number, client: string): CreateDraft | null {
+  if (typeof window === 'undefined') return null
+  try {
+    const raw = window.localStorage.getItem(draftKeyFor(chainId, client))
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as CreateDraft
+    return parsed && typeof parsed.vaultAddress === 'string' ? parsed : null
+  } catch {
+    return null
+  }
+}
+
+export function saveCreateDraft(chainId: number, client: string, draft: CreateDraft) {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.setItem(draftKeyFor(chainId, client), JSON.stringify(draft))
+  } catch {
+    // storage full / disabled — the flow still works, it just won't resume.
+  }
+}
+
+export function clearCreateDraft(chainId: number, client: string) {
+  if (typeof window === 'undefined') return
+  window.localStorage.removeItem(draftKeyFor(chainId, client))
+}

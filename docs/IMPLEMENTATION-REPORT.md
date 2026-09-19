@@ -1,6 +1,6 @@
 # IMPLEMENTATION REPORT
 
-> Full-stack status of Arc Milestone Assurance as of 2026-09-17: what is
+> Full-stack status of Commit as of 2026-09-17: what is
 > implemented, what is verified, and what is still open. Verified numbers in
 > this report were re-run on this date (`forge test`, `tsc`, `next build`,
 > browser check). The UI-specific audit lives in
@@ -107,7 +107,7 @@ Next.js 15 (`output: 'export'`, trailing slash, unoptimized images), React 19,
 wagmi 2 + viem 2 (injected connector, cookie storage, SSR-safe), TanStack
 Query, Tailwind 3 + tailwindcss-animate, motion/framer-motion, lucide-react +
 simple-icons, Radix (dialog, dropdown-menu). Fonts: Inter + Plus Jakarta Sans
-(`next/font`). Design tokens per `docs/Design.md`.
+(`next/font`). Design tokens per `docs/DESIGN.md`.
 
 Chains configured: Arc Mainnet (5042), Arc Testnet (5042002), local anvil
 (31337), selected via `NEXT_PUBLIC_CHAIN`.
@@ -152,14 +152,14 @@ Chains configured: Arc Mainnet (5042), Arc Testnet (5042002), local anvil
 
 ## 5. Documentation
 
-- `Arc_Milestone_Assurance_Master_Product_Roadmap.md` — master product/engineering
+- `Commit_Master_Product_Roadmap.md` — master product/engineering
   authority (35 sections).
 - `docs/DECISIONS.md` — decision log: D-001…D-011 inherited + architecture
   decisions AD-1 (Arc params), AD-2 (USDC ERC-20 semantics), AD-3 (per-milestone
   vault via CREATE).
 - `docs/ARC_MAINNET.md` — verified network parameters (chain 5042, RPC,
   explorer, native-USDC/ERC-20 interface rules, decimals warning).
-- `docs/Design.md` — frontend design system spec (tokens, stacks, motion).
+- `docs/DESIGN.md` — frontend design system spec (tokens, stacks, motion).
 - `docs/UI-AUDIT-REPORT.md` — UI defect audit + fixes (this session).
 - `README.md` (root) — submission-facing overview per §34 of the roadmap.
 - `DEMO_EVIDENCE.md` — evidence register: local rehearsal recorded, mainnet

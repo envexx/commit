@@ -16,7 +16,7 @@ import {
   type VaultConfigData,
   type VaultStatusData,
 } from '@/hooks/useVault'
-import { MilestoneCard } from '@/components/MilestoneCard'
+import { MilestoneCard } from '@/components/milestone/MilestoneCard'
 import { EmptyState } from '@/components/ui/empty-state'
 import { SegmentedControl } from '@/components/ui/segmented-control'
 import { RoleIntentCards } from '@/components/work/RoleIntentCards'
@@ -139,88 +139,89 @@ export function WorkHome({ address }: { address: `0x${string}` }) {
   return (
     <div className="container-fx py-10 md:py-14">
       <header className="max-w-2xl">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-brand">
-          Your work · {targetChain.name}
-        </p>
-        <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-ink">
-          What do you want to do?
-        </h1>
-        <p className="mt-2 text-sm leading-relaxed text-ink-muted">
-          The same wallet can hire on one milestone and work on another. Every
-          state below is read straight from the chain — nothing here is a
-          promise.
-        </p>
-      </header>
+          <p className="label-mono flex items-center gap-2 text-brand-strong">
+            <span className="inline-block h-1.5 w-1.5 bg-brand" />
+            Your work · {targetChain.name}
+          </p>
+          <h1 className="heading-retro mt-4 text-3xl font-bold text-ink sm:text-4xl">
+            What do you want to do?
+          </h1>
+          <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+            The same wallet can hire on one milestone and work on another. Every
+            state below is read straight from the chain — nothing here is a
+            promise.
+          </p>
+        </header>
 
-      <div className="mt-8">
-        <RoleIntentCards openInputRef={openInputRef} />
-      </div>
-
-      <section className="mt-12">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <h2 className="font-display text-2xl font-bold tracking-tight text-ink">Your work</h2>
-          <SegmentedControl
-            options={['Getting paid', 'Paying']}
-            value={tab}
-            onChange={(v) => setTab(v as Tab)}
-          />
+        <div className="mt-8">
+          <RoleIntentCards openInputRef={openInputRef} />
         </div>
 
-        <div className="mt-6">
-          {emptyAll ? (
-            <div className="flex justify-center">
-              <EmptyState
-                icon={<Plus className="h-4 w-4" />}
-                title="No payments protected yet"
-                hint="create the milestone, secure the USDC, then share it with your contractor"
-                action="Protect a payment"
-                onAction={() => router.push('/create')}
-              />
-            </div>
-          ) : activeRows.length > 0 ? (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {activeRows.map((row) => (
-                <MilestoneCard
-                  key={row.record.address}
-                  record={row.record}
-                  role={row.role}
-                  state={row.state}
-                  config={row.config}
-                  submitDeadlineSec={row.status?.submitDeadline}
-                  reviewDeadlineSec={row.status?.reviewDeadline}
+        <section className="mt-12">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <h2 className="heading-retro text-2xl font-bold text-ink">Your work</h2>
+            <SegmentedControl
+              options={['Getting paid', 'Paying']}
+              value={tab}
+              onChange={(v) => setTab(v as Tab)}
+            />
+          </div>
+
+          <div className="mt-6">
+            {emptyAll ? (
+              <div className="flex justify-center">
+                <EmptyState
+                  icon={<Plus className="h-4 w-4" />}
+                  title="No payments protected yet"
+                  hint="create the milestone, secure the USDC, then share it with your contractor"
+                  action="Protect a payment"
+                  onAction={() => router.push('/create')}
                 />
-              ))}
-            </div>
-          ) : tab === 'Getting paid' ? (
-            <div className="flex justify-center">
-              <EmptyState
-                icon={<HandCoins className="h-4 w-4" />}
-                title="Nothing shared with you yet"
-                hint="when a client shares a milestone with you it appears here — open the link they sent"
-                action="Open a shared milestone"
-                onAction={focusOpenInput}
-              />
-            </div>
-          ) : (
-            <div className="flex justify-center">
-              <EmptyState
-                icon={<Plus className="h-4 w-4" />}
-                title="No payments protected yet"
-                hint="create the milestone, secure the USDC, then share it with your contractor"
-                action="Protect a payment"
-                onAction={() => router.push('/create')}
-              />
-            </div>
-          )}
-        </div>
-      </section>
+              </div>
+            ) : activeRows.length > 0 ? (
+              <div className="grid gap-4 sm:grid-cols-2">
+                {activeRows.map((row) => (
+                  <MilestoneCard
+                    key={row.record.address}
+                    record={row.record}
+                    role={row.role}
+                    state={row.state}
+                    config={row.config}
+                    submitDeadlineSec={row.status?.submitDeadline}
+                    reviewDeadlineSec={row.status?.reviewDeadline}
+                  />
+                ))}
+              </div>
+            ) : tab === 'Getting paid' ? (
+              <div className="flex justify-center">
+                <EmptyState
+                  icon={<HandCoins className="h-4 w-4" />}
+                  title="Nothing shared with you yet"
+                  hint="when a client shares a milestone with you it appears here — open the link they sent"
+                  action="Open a shared milestone"
+                  onAction={focusOpenInput}
+                />
+              </div>
+            ) : (
+              <div className="flex justify-center">
+                <EmptyState
+                  icon={<Plus className="h-4 w-4" />}
+                  title="No payments protected yet"
+                  hint="create the milestone, secure the USDC, then share it with your contractor"
+                  action="Protect a payment"
+                  onAction={() => router.push('/create')}
+                />
+              </div>
+            )}
+          </div>
+        </section>
 
-      <p className="mt-10 border-t border-line-light pt-4 text-xs text-ink-muted">
-        How settlement works in detail:{' '}
-        <Link href="/about#how" className="font-semibold text-brand hover:underline">
-          read the product story
-        </Link>
-      </p>
+        <p className="mt-10 border-t border-line-light pt-4 text-xs text-ink-muted">
+          How settlement works in detail:{' '}
+          <Link href="/about#how" className="font-semibold text-brand hover:underline">
+            read the product story
+          </Link>
+        </p>
     </div>
   )
 }
